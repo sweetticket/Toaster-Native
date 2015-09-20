@@ -40,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
             GlobalVariables.mUserId = userId;
 
             Intent toMainIntent = new Intent(this, MainActivity.class);
+            finish();
             startActivity(toMainIntent);
         }
 
@@ -65,9 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                EditText emailField = (EditText) findViewById(R.id.signup_email);
-                EditText passwordField = (EditText) findViewById(R.id.signup_password);
-                EditText passwordConfirmField = (EditText) findViewById(R.id.signup_password2);
+
                 String email = emailField.getText().toString().trim().toLowerCase();
                 String password = passwordField.getText().toString();
                 String password2 = passwordConfirmField.getText().toString();
