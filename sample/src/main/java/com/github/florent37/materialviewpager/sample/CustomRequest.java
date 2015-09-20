@@ -19,7 +19,7 @@ public class CustomRequest extends Request<JSONObject> {
 
     private Listener<JSONObject> listener;
     private Map<String, String> params;
-    
+
 
     public CustomRequest(String url, Map<String, String> params,
                          Listener<JSONObject> reponseListener, ErrorListener errorListener) {
@@ -59,4 +59,5 @@ public class CustomRequest extends Request<JSONObject> {
         // TODO Auto-generated method stub
         listener.onResponse(response);
     }
+
 }

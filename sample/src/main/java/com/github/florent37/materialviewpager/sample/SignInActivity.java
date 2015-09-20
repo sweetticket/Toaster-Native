@@ -52,7 +52,7 @@ public class SignInActivity extends AppCompatActivity {
         mInstance = this;
 
         if (GlobalVariables.mUserId != null && GlobalVariables.mTokenExp != null && GlobalVariables.mToken != null) {
-            Log.d("mUserId", "signed in as " + GlobalVariables.mUserId);
+            Log.d("mUserId", "signed in as " + GlobalVariables.mUserId + ", token: " + GlobalVariables.mToken);
 
             Intent toMainIntent = new Intent(this, MainActivity.class);
             SignUpActivity.getInstance().finish();

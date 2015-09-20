@@ -83,10 +83,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 switch (position % 2) {
-                    //case 0:
-                    //    return RecyclerViewFragment.newInstance();
-                    //case 1:
-                    //    return RecyclerViewFragment.newInstance();
+                    case 0:
+                        RecyclerViewFragment recentFragment =  RecyclerViewFragment.newInstance();
+                        recentFragment.populatePosts(0);
+                        return recentFragment;
+                    case 1:
+                        RecyclerViewFragment trendingFragment =  RecyclerViewFragment.newInstance();
+                        trendingFragment.populatePosts(1);
+                        return trendingFragment;
                     //case 2:
                     //    return WebViewFragment.newInstance();
                     default:
