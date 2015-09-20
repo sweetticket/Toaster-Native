@@ -19,6 +19,8 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public TestRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
+        // add empty head for 'new post' card
+        this.contents.add(0, new Object());
     }
 
     @Override
@@ -49,7 +51,7 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             case TYPE_CELL: {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_item_card_small, parent, false);
+                        .inflate(R.layout.post_card, parent, false);
                 return new RecyclerView.ViewHolder(view) {
                 };
             }

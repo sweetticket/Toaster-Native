@@ -39,7 +39,7 @@ public class RecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private ArrayList<JSONObject> mPostObjects;
+    private List<Object> mPostObjects = new ArrayList<Object>();
 
     private static final int ITEM_COUNT = 100;
 
@@ -81,8 +81,6 @@ public class RecyclerViewFragment extends Fragment {
 
                             Log.d("get_posts_req", json.toString());
                             Log.d("get_posts_req", "json.length() = " + json.length());
-
-                            mPostObjects = new ArrayList<JSONObject>();
 
                             for (int i = 0; i < json.length(); i++) {
 
@@ -138,12 +136,12 @@ public class RecyclerViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewMaterialAdapter(new TestRecyclerViewAdapter(mContentItems));
+        mAdapter = new RecyclerViewMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects));
         mRecyclerView.setAdapter(mAdapter);
 
         {
-            for (int i = 0; i < ITEM_COUNT; ++i)
-                mContentItems.add(new Object());
+//            for (int i = 0; i < mPostObjects.size(); ++i)
+//                mContentItems.add(new Object());
             mAdapter.notifyDataSetChanged();
         }
 
