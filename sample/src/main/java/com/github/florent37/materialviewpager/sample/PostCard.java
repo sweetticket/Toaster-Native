@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 /**
  * Created by jennykim on 9/20/15.
  */
@@ -28,16 +30,19 @@ public class PostCard extends RecyclerView.ViewHolder {
 
     }
 
-    private final TextWatcher mNewPostWatcher= new TextWatcher() {
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void bindPost(JSONObject post) {
+
+        try {
+            String body = post.getString("body");
+            mPostBody.setText(body);
+
+        } catch (org.json.JSONException e) {
+
         }
 
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            //This sets a textview to the current length
-            mCharCount.setText(String.valueOf(140 - s.length()));
-        }
 
-        public void afterTextChanged(Editable s) {
-        }
-    };
+
+    }
+
+
 }

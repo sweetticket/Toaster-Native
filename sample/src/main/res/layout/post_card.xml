@@ -7,7 +7,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="match_parent"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
         android:layout_marginBottom="@dimen/cardMarginVertical"
@@ -18,100 +18,223 @@
         app:contentPadding="0dp">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                >
+                android:layout_height="wrap_content"
+                android:minHeight="70dp"
+                android:measureWithLargestChild="true"
+                android:longClickable="true">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7">
+            <TextView
+                android:id="@+id/post_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Hello"
+                android:padding="10dp"
+                android:textSize="16dp"
+                android:textColor="#333"
+                />
+                </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingTop="5dp"
+                android:gravity="bottom"
+                android:baselineAligned="false"
+                android:paddingBottom="5dp">
 
                 <TextView
-                    android:id="@+id/post_body"
-                    android:layout_width="match_parent"
+                    android:id="@+id/post_date"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Hello! Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!"
-                    android:padding="10dp"
+                    android:layout_gravity="left|bottom"
+                    android:text="5m"
+                    android:textColor="#999"
                     android:textSize="12dp"
-                    android:textColor="#333" />
-                    </LinearLayout>
+                    android:gravity="bottom" />
 
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/num_comments"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_gravity="left|bottom"
+                    android:text="4 Comments"
+                    android:textAlignment="center"
+                    android:textColor="#999"
+                    android:gravity="center|bottom"
+                    android:layout_weight="1"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/upvote"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
-                        android:src="@mipmap/upvote"/>
 
-                    <TextView
-                        android:id="@+id/num_votes"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:text="8"
-                        android:textAlignment="center"
-                        android:gravity="center" />
 
-                    <ImageView
-                        android:id="@+id/downvote"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
-                        android:src="@mipmap/downvote"/>
+        </LinearLayout>
 
-                    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <ImageView
+                    android:id="@+id/upvote"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/upvote"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" />
+
+                <TextView
+                    android:id="@+id/num_votes"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="8"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textColor="@color/ColorPrimary"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/downvote"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/downvote"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TextView
-                android:id="@+id/post_date"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|bottom"
-                android:text="5m"
-                android:textColor="#999"
-                android:textSize="10dp"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/num_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|bottom"
-                android:text="4 Comments"
-                android:textAlignment="center"
-                android:textColor="#999"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textSize="10dp" />
-        </LinearLayout>
 
         </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!-->-->
+
+                <!--<LinearLayout-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="7">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/post_body"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="Hello! Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:textSize="16dp"-->
+                    <!--android:textColor="#333" />-->
+                    <!--</LinearLayout>-->
+
+
+                <!--<LinearLayout-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/upvote"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="0dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:src="@mipmap/upvote"-->
+                        <!--android:paddingLeft="8dp"-->
+                        <!--android:paddingRight="8dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/num_votes"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="0dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:text="8"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@color/ColorPrimary"-->
+                        <!--android:textSize="18dp" />-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/downvote"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="0dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:src="@mipmap/downvote"-->
+                        <!--android:paddingLeft="8dp"-->
+                        <!--android:paddingRight="8dp" />-->
+
+                    <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:paddingBottom="5dp">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/post_date"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="left|bottom"-->
+                <!--android:text="5m"-->
+                <!--android:textColor="#999"-->
+                <!--android:textSize="12dp"-->
+                <!--android:gravity="center" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/num_comments"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="left|bottom"-->
+                <!--android:text="4 Comments"-->
+                <!--android:textAlignment="center"-->
+                <!--android:textColor="#999"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:textSize="12dp" />-->
+        <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
 
 
     </android.support.v7.widget.CardView>
