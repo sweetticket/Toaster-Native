@@ -41,21 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent signUpIntent = new Intent(this, SignUpActivity.class);
-        startActivity(signUpIntent);
-
-//        SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
-//        if (prefs.getString("UserId", "") == null) {
-//            Log.d("prefs_userId", "not signed in");
-//            Intent signUpIntent = new Intent(this, SignUpActivity.class);
-//            startActivity(signUpIntent);
-//        } else {
-//            Log.d("prefs_userId", prefs.getString("UserId", "").toString());
-//            if (GlobalVariables.mUserId == null) {
-//                GlobalVariables.mUserId = prefs.getString("UserId", "").toString();
-//            }
-//        }
-
         setContentView(R.layout.activity_main);
 
         if (!BuildConfig.DEBUG)

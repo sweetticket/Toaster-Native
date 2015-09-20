@@ -2,9 +2,11 @@ package com.github.florent37.materialviewpager.sample;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +19,11 @@ import com.gc.materialdesign.views.Button;
 public class SignUpActivity extends AppCompatActivity {
 
     Context mContext;
+    Button signUpButton;
+    Button toSignInButton;
+    EditText emailField;
+    EditText passwordField;
+    EditText passwordConfirmField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +31,36 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.sign_up);
         mContext = this;
 
+
+
+        SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
+        String userId = prefs.getString("toaster_userId", null);
+        if (userId != null) {
+            Log.d("toaster_userId", "signed in as " + userId);
+            GlobalVariables.mUserId = userId;
+
+            Intent toMainIntent = new Intent(this, MainActivity.class);
+            startActivity(toMainIntent);
+        }
+
         TextView appTitle = (TextView) findViewById(R.id.app_title);
 
         Typeface face = Typeface.createFromAsset(getAssets(),
                 "fonts/oduda.ttf");
         appTitle.setTypeface(face);
 
-        Button signUpButton = (Button) findViewById(R.id.signup_btn);
-        Button toSignInButton = (Button) findViewById(R.id.to_signin_btn);
+        signUpButton = (Button) findViewById(R.id.signup_btn);
+        toSignInButton = (Button) findViewById(R.id.to_signin_btn);
+        emailField = (EditText) findViewById(R.id.signup_email);
+        passwordField = (EditText) findViewById(R.id.signup_password);
+        passwordConfirmField = (EditText) findViewById(R.id.signup_password2);
+
+        emailField.setHintTextColor(getResources().getColor(R.color.White));
+        passwordField.setHintTextColor(getResources().getColor(R.color.White));
+        passwordConfirmField.setHintTextColor(getResources().getColor(R.color.White));
+
+        signUpButton.getTextView().setTextColor(getResources().getColor(R.color.ColorPrimary));
+
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
 

@@ -12,11 +12,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".SignUpActivity"
             android:label="@string/app_name"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/InverseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,13 +29,14 @@
             android:name="io.fabric.ApiKey"
             android:value="29cbd600bb8183011201895a931db91e93f2d614" />
 
-        <activity android:name=".SignUpActivity"
+        <activity android:name=".MainActivity"
             android:background="@drawable/bg"
             android:launchMode="singleTask"></activity>
 
         <activity android:name=".SignInActivity"
             android:background="@drawable/bg"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"
+            android:theme="@style/InverseTheme"></activity>
 
     </application>
 
