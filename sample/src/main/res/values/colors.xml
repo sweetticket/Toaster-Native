@@ -2,7 +2,7 @@
 <resources>
 
     <color name="blue">#303F9F</color>
-    <color name="black">#000000</color>
+    <color name="Black">#000000</color>
 
     <color name="ColorPrimary">#ff464f</color>
     <color name="ColorPrimaryDark">#c31c13</color>
@@ -10,6 +10,7 @@
     <color name="tabsScrollColor">#8a140e</color>
     <color name="ColorLightGray">#ADADAD</color>
     <color name="White">#FFFFFF</color>
+    <color name="DarkGray">#222</color>
 
     <color name="accent_color">@color/ColorPrimary</color>
     <color name="colorPrimary">@color/ColorPrimary</color>

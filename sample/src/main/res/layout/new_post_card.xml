@@ -33,7 +33,7 @@
         android:layout_marginRight="@dimen/cardMarginHorizontal"
         android:layout_marginTop="@dimen/cardMarginVertical"
         android:maxLength="140"
-        android:textColor="@color/black"
+        android:textColor="@color/Black"
         android:hint="Post something anonymously!"/>
 
         <TextView

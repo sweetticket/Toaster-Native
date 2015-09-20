@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView
     android:id="@+id/left_drawer"
-    android:layout_width="320dp"
+    android:layout_width="100dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@android:color/white"
-     />
+    app:padding-top="35dp"
+    android:choiceMode="singleChoice"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp"
+    android:background="@color/DarkGray"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools" />

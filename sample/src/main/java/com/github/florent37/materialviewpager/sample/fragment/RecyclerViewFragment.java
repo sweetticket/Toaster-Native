@@ -28,8 +28,7 @@ public class RecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-//    private TextView mCharCount;
-//    private EditText mNewPost;
+
 
     private static final int ITEM_COUNT = 100;
 
@@ -63,21 +62,6 @@ public class RecyclerViewFragment extends Fragment {
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
 
-//        mNewPost = (EditText) view.findViewById(R.id.new_post_input);
-//        mCharCount = (TextView) view.findViewById(R.id.char_count);
-//        mNewPost.addTextChangedListener(mNewPostWatcher);
     }
 
-//    private final TextWatcher mNewPostWatcher= new TextWatcher() {
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//        }
-//
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            //This sets a textview to the current length
-//            mCharCount.setText(String.valueOf(140 - s.length()));
-//        }
-//
-//        public void afterTextChanged(Editable s) {
-//        }
-//    };
 }
