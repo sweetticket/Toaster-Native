@@ -1,5 +1,7 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent signUpIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpIntent);
+
+//        SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
+//        if (prefs.getString("UserId", "") == null) {
+//            Log.d("prefs_userId", "not signed in");
+//            Intent signUpIntent = new Intent(this, SignUpActivity.class);
+//            startActivity(signUpIntent);
+//        } else {
+//            Log.d("prefs_userId", prefs.getString("UserId", "").toString());
+//            if (GlobalVariables.mUserId == null) {
+//                GlobalVariables.mUserId = prefs.getString("UserId", "").toString();
+//            }
+//        }
+
         setContentView(R.layout.activity_main);
 
         if (!BuildConfig.DEBUG)
