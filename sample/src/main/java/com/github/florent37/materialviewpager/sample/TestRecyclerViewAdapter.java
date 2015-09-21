@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by florentchampigny on 24/04/15.
@@ -16,18 +17,22 @@ import java.util.List;
 public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<Object> contents;
+    private Map<String, Integer> mCommentsCountMap;
 
     static final int TYPE_HEADER = 0;
     static final int TYPE_CELL = 1;
 
-    public TestRecyclerViewAdapter(List<Object> contents) {
+    public TestRecyclerViewAdapter(List<Object> contents, Map<String, Integer> commentsCountMap) {
         this.contents = contents;
+        this.mCommentsCountMap = commentsCountMap;
 
         Log.d("contents", "contents: " + contents.toString());
+        Log.d("mCommentsCountMap", "mCommentsCountMap: " + mCommentsCountMap.toString());
     }
 
-    public void updateContents(List<Object> newContents) {
+    public void updateContents(List<Object> newContents, Map<String, Integer> newCommentsCountMap) {
         contents = newContents;
+        mCommentsCountMap = newCommentsCountMap;
         notifyDataSetChanged();
     }
 
@@ -77,7 +82,7 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             case TYPE_CELL:
                 try {
                     Log.d("onBindViewHolder", "contents: " +  contents.toString());
-                    ((PostItem) holder).bindPost((JSONObject) contents.get(position));
+                    ((PostItem) holder).bindPost((JSONObject) contents.get(position), mCommentsCountMap);
                 } catch (java.lang.ClassCastException e) {
                     Log.d("onBindViewHolder", e.getMessage());
                 }

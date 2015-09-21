@@ -42,6 +42,7 @@ public class RecyclerViewFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private CustomMaterialAdapter mAdapter;
     private List<Object> mPostObjects = new ArrayList<Object>();
+    private Map<String, Integer> mCommentsCountMap = new HashMap<String, Integer>();
     private int mPosition;
 
     public static RecyclerViewFragment newInstance() {
@@ -54,6 +55,7 @@ public class RecyclerViewFragment extends Fragment {
 
     public void populatePosts() {
         mPostObjects.clear();
+        mCommentsCountMap.clear();
 
         Log.d("populatePosts", "Just emptiedmPostObjects, length = " + mPostObjects.size());
 
@@ -71,6 +73,35 @@ public class RecyclerViewFragment extends Fragment {
             url = GlobalVariables.ROOT_URL + "/publications/trendingPostsAndComments";
         }
 
+        sendGetPostsRequest(url);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recyclerview, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new CustomMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects, mCommentsCountMap));
+        mRecyclerView.setAdapter(mAdapter);
+        populatePosts();
+        mAdapter.updateContents(mPostObjects, mCommentsCountMap);
+        Log.d("onViewCreated", mPostObjects.toString());
+
+        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+
+    }
+
+    private void sendGetPostsRequest(String url) {
+
         // Tag used to cancel the request
         String tag_json_obj = "get_posts_req";
 
@@ -81,22 +112,22 @@ public class RecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("get_posts_req", response.toString());
+                        Log.d("postsandcomments", response.toString());
 
                         try {
 
-                            JSONArray json = response.getJSONArray("posts");
+                            JSONArray postsJson = response.getJSONArray("posts");
 
-                            Log.d("get_posts_req", json.toString());
-                            Log.d("get_posts_req", "json.length() = " + json.length());
+                            Log.d("get_posts_req", postsJson.toString());
+                            Log.d("get_posts_req", "json.length() = " + postsJson.length());
 
-                            for (int i = 0; i < json.length(); i++) {
+                            for (int i = 0; i < postsJson.length(); i++) {
 
                                 try {
-                                    mPostObjects.add(json.getJSONObject(i));
+                                    mPostObjects.add(postsJson.getJSONObject(i));
                                 }
                                 catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.d("get_posts_req", e.getMessage());
 
                                 }
 
@@ -113,6 +144,30 @@ public class RecyclerViewFragment extends Fragment {
                         // add empty head for 'new post' card
                         mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
+
+                        try {
+                            JSONArray commentsJson = response.getJSONArray("comments");
+                            for (int i = 0; i < commentsJson.length(); i++) {
+
+                                try {
+                                    String key = commentsJson.getJSONObject(i).getString("postId");
+                                    if (mCommentsCountMap.containsKey(key)) {
+                                        mCommentsCountMap.put(key, mCommentsCountMap.get(key) + 1);
+                                    } else {
+                                        mCommentsCountMap.put(key, 1);
+                                    }
+                                }
+                                catch (JSONException e) {
+                                    Log.d("get_posts_req", e.getMessage());
+
+                                }
+
+                            };
+
+
+                        } catch (JSONException e) {
+                            Log.d("get_posts_req", e.getMessage());
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -131,30 +186,9 @@ public class RecyclerViewFragment extends Fragment {
             }
         };
 
-// Adding request to request queue
+    // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recyclerview, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new CustomMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects));
-        mRecyclerView.setAdapter(mAdapter);
-        populatePosts();
-        mAdapter.updateContents(mPostObjects);
-        Log.d("onViewCreated", mPostObjects.toString());
-
-        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
 
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import junit.framework.Test;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by florentchampigny on 24/04/15.
@@ -140,8 +141,8 @@ public class CustomMaterialAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemRangeRemoved(startPosition, itemCount);
     }
 
-    public void updateContents(List<Object> newContents) {
-        mAdapter.updateContents(newContents);
+    public void updateContents(List<Object> newContents, Map<String, Integer> newCommentsCountMap) {
+        mAdapter.updateContents(newContents, newCommentsCountMap);
     }
 
 }

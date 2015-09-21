@@ -36,6 +36,8 @@ public class AppController extends Application {
         mInstance = this;
 
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
+//        prefs.edit().clear().commit();
+
         GlobalVariables.mUserId = prefs.getString("userId", null);
         GlobalVariables.mToken = prefs.getString("token", null);
         GlobalVariables.mTokenExp = prefs.getString("tokenExp", null);
