@@ -38,6 +38,8 @@
             android:background="@drawable/bg"
             android:launchMode="singleTask"
             android:theme="@style/InverseTheme"></activity>
+        <activity android:name=".PostDetailActivity"
+            android:launchMode="singleTask"></activity>
 
     </application>
 

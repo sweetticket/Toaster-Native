@@ -59,6 +59,10 @@ public class PostDetailActivity extends AppCompatActivity {
 //
     }
 
+    private void populateComments() {
+
+    }
+
     private void sendCommentRequest() {
         // Tag used to cancel the request
 //        String tag_json_obj = "sign_in_req";
