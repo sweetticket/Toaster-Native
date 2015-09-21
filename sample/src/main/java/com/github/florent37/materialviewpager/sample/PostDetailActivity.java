@@ -1,10 +1,13 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +50,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private TextView mPostNumVotes;
     private ImageView mUpvote;
     private ImageView mDownvote;
+    private Button mSubmitBtn;
 
     public static synchronized PostDetailActivity getInstance() {
         return mInstance;
@@ -58,12 +62,20 @@ public class PostDetailActivity extends AppCompatActivity {
         setContentView(R.layout.post_detail);
         mInstance = this;
 
+        mCommentEditText = (EditText) findViewById(R.id.new_comment);
         mPostBody = (TextView) findViewById(R.id.post_body);
         mPostDate = (TextView) findViewById(R.id.post_date);
         mUpvote = (ImageView) findViewById(R.id.upvote);
         mDownvote = (ImageView) findViewById(R.id.downvote);
         mPostNumVotes = (TextView) findViewById(R.id.num_votes);
         mPostNumComments = (TextView) findViewById(R.id.num_comments);
+        mSubmitBtn = (Button) findViewById(R.id.submit_comment);
+        mSubmitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNewCommentRequest();
+            }
+        });
 
         String post_obj_str = getIntent().getStringExtra("postObject");
 
@@ -127,6 +139,8 @@ public class PostDetailActivity extends AppCompatActivity {
                             Log.d("get_comments_req", "comments JSONarray = " + commentsJson.toString());
                             Log.d("get_comments_req", "commentsjsonarray.length() = " + commentsJson.length());
 
+                            setNumComments(commentsJson.length());
+
                             for (int i = 0; i < commentsJson.length(); i++) {
 
                                 try {
@@ -146,7 +160,6 @@ public class PostDetailActivity extends AppCompatActivity {
                             Log.d("get_comments_req", e.getMessage());
                         }
 
-                        Collections.reverse(mCommentObjects);
                         mAdapter.updateContents(mCommentObjects);
                         mAdapter.notifyDataSetChanged();
 
@@ -171,8 +184,69 @@ public class PostDetailActivity extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
 
-
     }
 
+    private void sendNewCommentRequest() {
+        // Tag used to cancel the request
+        String tag_json_obj = "new_comment_req";
+
+        String url = GlobalVariables.ROOT_URL + "/api/comments/new";
+        String commentBody = mCommentEditText.getText().toString().trim();
+
+        if (commentBody != "") {
+
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("commentBody", commentBody);
+            params.put("postId", mPostId);
+
+
+            CustomRequest jsonObjReq = new CustomRequest(Request.Method.POST, url, params,
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("new_comment_req", response.toString());
+                            mCommentEditText.setText("");
+                            populateComments();
+                            closeKeyboard();
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("new_comment_req", "Error: " + error.getMessage());
+                }
+            }){
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                    return headers;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+
+        }
+    }
+
+    public void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public void setNumComments(int count) {
+        if (count == 1) {
+            mPostNumComments.setText("1 Comment");
+        } else {
+            mPostNumComments.setText(count +" Comments");
+        }
+
+    }
 
 }

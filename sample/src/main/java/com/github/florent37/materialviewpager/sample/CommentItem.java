@@ -18,6 +18,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
     private TextView mCommentBody;
     private TextView mCommentDate;
     private TextView mCommentNumVotes;
+    private TextView mCommentNameTag;
     private ImageView mUpvote;
     private ImageView mDownvote;
 
@@ -30,6 +31,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
         mCommentBody = (TextView) view.findViewById(R.id.comment_body);
         mCommentDate = (TextView) view.findViewById(R.id.comment_date);
         mCommentNumVotes = (TextView) view.findViewById(R.id.num_votes);
+        mCommentNameTag = (TextView) view.findViewById(R.id.comment_name_tag);
         mUpvote = (ImageView) view.findViewById(R.id.upvote);
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
 
@@ -54,8 +56,11 @@ public class CommentItem extends RecyclerView.ViewHolder {
             mCommentId = comment.getString("_id");
             Log.d("bindComment", "commentId: " + mCommentId);
 
+            String nameTag = comment.getString("nameTag");
+
             mCommentBody.setText(body);
             mCommentNumVotes.setText(numLikes);
+            mCommentNameTag.setText("by " + nameTag);
 //            mCommentDate.setText(createdAt);
 
 //            if (Arrays.asList(upvoterIds).contains(GlobalVariables.mUserId)) {

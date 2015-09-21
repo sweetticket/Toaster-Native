@@ -10,7 +10,8 @@
     android:id="@+id/scrollView"
     android:fillViewport="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="60dp">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -199,6 +200,7 @@ android:gravity="start|bottom"
     android:padding="5dp">
 
     <EditText
+        android:id="@+id/new_comment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginRight="5dp"
@@ -208,7 +210,9 @@ android:gravity="start|bottom"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingRight="10dp"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="5dp"
+        android:textColor="@color/Black"
+        android:maxLength="140"/>
 
     <com.gc.materialdesign.views.ButtonFlat
         android:id="@+id/submit_comment"

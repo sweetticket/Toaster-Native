@@ -1,12 +1,9 @@
 package com.github.florent37.materialviewpager.sample;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +13,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gc.materialdesign.views.Button;
-import com.github.florent37.materialviewpager.sample.R;
 
 import org.json.JSONObject;
 
@@ -48,7 +44,7 @@ public class NewPostItem extends RecyclerView.ViewHolder {
         mSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendPostRequest();
+                sendNewPostRequest();
             }
         });
 
@@ -71,7 +67,7 @@ public class NewPostItem extends RecyclerView.ViewHolder {
         }
     };
 
-    private void sendPostRequest() {
+    private void sendNewPostRequest() {
         // Tag used to cancel the request
         String tag_json_obj = "new_post_req";
 
