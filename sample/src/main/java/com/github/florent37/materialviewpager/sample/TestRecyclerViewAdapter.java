@@ -1,9 +1,12 @@
 package com.github.florent37.materialviewpager.sample;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -20,7 +23,12 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public TestRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
         // add empty head for 'new post' card
-        this.contents.add(0, new Object());
+        Log.d("contents", "contents: " + contents.toString());
+    }
+
+    public void updateContents(List<Object> newContents) {
+        contents = newContents;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -45,14 +53,14 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         switch (viewType) {
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.new_post_card, parent, false);
-                return new NewPostCard(view) {
+                        .inflate(R.layout.new_post_item, parent, false);
+                return new NewPostItem(view) {
                 };
             }
             case TYPE_CELL: {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.post_card, parent, false);
-                return new RecyclerView.ViewHolder(view) {
+                        .inflate(R.layout.post_item, parent, false);
+                return new PostItem(view) {
                 };
             }
         }
@@ -66,6 +74,12 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             case TYPE_HEADER:
                 break;
             case TYPE_CELL:
+                try {
+                    Log.d("onBindViewHolder", "contents: " +  contents.toString());
+                    ((PostItem) holder).bindPost((JSONObject) contents.get(position));
+                } catch (java.lang.ClassCastException e) {
+                    Log.d("onBindViewHolder", e.getMessage());
+                }
                 break;
         }
     }

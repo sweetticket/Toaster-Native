@@ -12,13 +12,13 @@ import com.github.florent37.materialviewpager.sample.R;
 /**
  * Created by jennykim on 9/20/15.
  */
-public class NewPostCard extends RecyclerView.ViewHolder {
+public class NewPostItem extends RecyclerView.ViewHolder {
 
     private TextView mCharCount;
     private EditText mNewPost;
 
 
-    public NewPostCard(View view) {
+    public NewPostItem(View view) {
         super(view);
 
         mNewPost = (EditText) view.findViewById(R.id.new_post_input);

@@ -1,17 +1,19 @@
-package com.github.florent37.materialviewpager.adapter;
+package com.github.florent37.materialviewpager.sample;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.florent37.materialviewpager.R;
+import junit.framework.Test;
+
+import java.util.List;
 
 /**
  * Created by florentchampigny on 24/04/15.
  * A RecyclerView.Adapter which inject a header to the actual RecyclerView.Adapter
  */
-public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CustomMaterialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //the constants value of the header view
     static final int TYPE_PLACEHOLDER = Integer.MIN_VALUE;
@@ -20,14 +22,14 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
     private int mPlaceholderSize = 1;
 
     //the actual RecyclerView.Adapter
-    private RecyclerView.Adapter mAdapter;
+    private TestRecyclerViewAdapter mAdapter;
 
     /**
      * Construct the RecyclerViewMaterialAdapter, which inject a header into an actual RecyclerView.Adapter
      *
      * @param adapter The real RecyclerView.Adapter which displays content
      */
-    public RecyclerViewMaterialAdapter(RecyclerView.Adapter adapter) {
+    public CustomMaterialAdapter(TestRecyclerViewAdapter adapter) {
         this.mAdapter = adapter;
 
         registerAdapterObserver();
@@ -39,7 +41,7 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
      * @param adapter         The real RecyclerView.Adapter which displays content
      * @param placeholderSize The number of placeholder items before real items, default is 1
      */
-    public RecyclerViewMaterialAdapter(RecyclerView.Adapter adapter, int placeholderSize) {
+    public CustomMaterialAdapter(TestRecyclerViewAdapter adapter, int placeholderSize) {
         this.mAdapter = adapter;
         mPlaceholderSize = placeholderSize;
 
@@ -82,7 +84,7 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
         switch (viewType) {
             case TYPE_PLACEHOLDER: {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.material_view_pager_placeholder, parent, false);
+                        .inflate(com.github.florent37.materialviewpager.R.layout.material_view_pager_placeholder, parent, false);
                 return new RecyclerView.ViewHolder(view) {
                 };
             }
@@ -109,7 +111,7 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void mvp_notifyItemChanged(int position) {
-        mAdapter.notifyItemChanged(position-1);
+        mAdapter.notifyItemChanged(position - 1);
         notifyItemChanged(position);
     }
 
@@ -124,8 +126,8 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void mpv_notifyItemRangeChanged(int startPosition, int itemCount) {
-        mAdapter.notifyItemRangeChanged(startPosition-1, itemCount-1);
-        notifyItemRangeChanged(startPosition,itemCount);
+        mAdapter.notifyItemRangeChanged(startPosition - 1, itemCount - 1);
+        notifyItemRangeChanged(startPosition, itemCount);
     }
 
     public void mpv_notifyItemRangeInserted(int startPosition, int itemCount) {
@@ -136,6 +138,10 @@ public class RecyclerViewMaterialAdapter extends RecyclerView.Adapter<RecyclerVi
     public void mpv_notifyItemRangeRemoved(int startPosition, int itemCount) {
         mAdapter.notifyItemRangeRemoved(startPosition - 1, itemCount - 1);
         notifyItemRangeRemoved(startPosition, itemCount);
+    }
+
+    public void updateContents(List<Object> newContents) {
+        mAdapter.updateContents(newContents);
     }
 
 }

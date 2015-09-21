@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.AppController;
+import com.github.florent37.materialviewpager.sample.CustomMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
 import com.github.florent37.materialviewpager.sample.R;
@@ -38,22 +39,26 @@ import java.util.Map;
 public class RecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private CustomMaterialAdapter mAdapter;
     private List<Object> mPostObjects = new ArrayList<Object>();
-
-    private static final int ITEM_COUNT = 100;
-
-    private List<Object> mContentItems = new ArrayList<>();
+    private int mPosition;
 
     public static RecyclerViewFragment newInstance() {
         return new RecyclerViewFragment();
     }
 
-    public void populatePosts(final int position) {
+    public void setPosition(int position) {
+        mPosition = position;
+    }
+
+    public void populatePosts() {
+
+        mPostObjects.clear();
+        mPostObjects.add(0, new Object());
 
         String url;
 
-        if (position == 0) {
+        if (mPosition == 0) {
             // recent
             url = GlobalVariables.ROOT_URL + "/publications/recentPostsAndComments";
 
@@ -85,6 +90,7 @@ public class RecyclerViewFragment extends Fragment {
                             for (int i = 0; i < json.length(); i++) {
 
                                 try {
+                                    Log.d("get_posts_req", "json.getJSONObject(" + i + ") = " + json.getJSONObject(i));
                                     mPostObjects.add(json.getJSONObject(i));
                                 }
                                 catch (JSONException e) {
@@ -101,6 +107,8 @@ public class RecyclerViewFragment extends Fragment {
                         } catch (org.json.JSONException e) {
                             Log.d("get_posts_req", e.getMessage());
                         }
+
+                        mAdapter.notifyDataSetChanged();
 
                     }
                 }, new Response.ErrorListener() {
@@ -136,14 +144,11 @@ public class RecyclerViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects));
+        mAdapter = new CustomMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects));
         mRecyclerView.setAdapter(mAdapter);
-
-        {
-//            for (int i = 0; i < mPostObjects.size(); ++i)
-//                mContentItems.add(new Object());
-            mAdapter.notifyDataSetChanged();
-        }
+        populatePosts();
+        mAdapter.updateContents(mPostObjects);
+        Log.d("onViewCreated", mPostObjects.toString());
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
 

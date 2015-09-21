@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (position % 2) {
                     case 0:
                         RecyclerViewFragment recentFragment =  RecyclerViewFragment.newInstance();
-                        recentFragment.populatePosts(0);
+                        recentFragment.setPosition(0);
                         return recentFragment;
                     case 1:
                         RecyclerViewFragment trendingFragment =  RecyclerViewFragment.newInstance();
-                        trendingFragment.populatePosts(1);
+                        trendingFragment.setPosition(1);
                         return trendingFragment;
                     //case 2:
                     //    return WebViewFragment.newInstance();
