@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="fill|fill_vertical"
+    android:fitsSystemWindows="true">
+<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
     android:id="@+id/scrollView"
+    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,13 +16,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="fill|fill_vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="left|top">
+        android:gravity="start|top"
+        android:minHeight="120dp">
 
 
         <android.support.v7.widget.CardView
@@ -35,7 +43,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -47,8 +56,6 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="110dp"
-                        android:measureWithLargestChild="true"
                         android:longClickable="true">
 
                         <TextView
@@ -58,6 +65,7 @@
                             android:text="Hello"
                             android:padding="10dp"
                             android:textSize="16dp"
+                            android:minHeight="110dp"
                             android:textColor="#333"
                             />
                     </LinearLayout>
@@ -150,29 +158,70 @@
 
     </LinearLayout>
 
-    <!--<include layout="@layout/fragment_recyclerview" />-->
+    <!--&lt;!&ndash;<include layout="@layout/fragment_recyclerview" />&ndash;&gt;-->
 
-    <!--<include layout="@layout/post_item" />-->
-    <!--<include layout="@layout/post_item" />-->
-    <!--<include layout="@layout/post_item" />-->
-    <!--<include layout="@layout/post_item" />-->
+    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:gravity="left|top"
-        android:minHeight="150dp">
+        android:gravity="start|fill_vertical|top"
+        android:minHeight="150dp"
+        android:fillViewport="true">
 
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start|top" />
 
         </LinearLayout>
 
 
 </LinearLayout>
 </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+
+<LinearLayout
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="50dp"
+android:gravity="start|bottom"
+    android:layout_gravity="bottom|left"
+    android:baselineAligned="false"
+    android:layout_marginTop="-50dp"
+    android:background="@color/White"
+    android:padding="5dp">
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:layout_weight="3"
+        android:hint="Reply..."
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp" />
+
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/submit_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/ColorPrimary"
+        android:text="COMMENT"
+        android:layout_weight="1"
+        android:layout_gravity="center" />
+
+
+
+
+</LinearLayout>
+
+</LinearLayout>
