@@ -14,25 +14,21 @@ import java.util.Map;
 /**
  * Created by florentchampigny on 24/04/15.
  */
-public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<Object> contents;
-    private Map<String, Integer> mCommentsCountMap;
 
     static final int TYPE_HEADER = 0;
     static final int TYPE_CELL = 1;
 
-    public TestRecyclerViewAdapter(List<Object> contents, Map<String, Integer> commentsCountMap) {
+    public CommentsRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
-        this.mCommentsCountMap = commentsCountMap;
 
         Log.d("contents", "contents: " + contents.toString());
-        Log.d("mCommentsCountMap", "mCommentsCountMap: " + mCommentsCountMap.toString());
     }
 
-    public void updateContents(List<Object> newContents, Map<String, Integer> newCommentsCountMap) {
+    public void updateContents(List<Object> newContents) {
         contents = newContents;
-        mCommentsCountMap = newCommentsCountMap;
         notifyDataSetChanged();
     }
 
@@ -82,8 +78,8 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             case TYPE_CELL:
                 try {
                     Log.d("onBindViewHolder", "contents: " +  contents.toString());
-                    ((PostItem) holder).bindPost((JSONObject) contents.get(position), mCommentsCountMap);
-                } catch (java.lang.ClassCastException e) {
+                    ((CommentItem) holder).bindPost((JSONObject) contents.get(position));
+                } catch (ClassCastException e) {
                     Log.d("onBindViewHolder", e.getMessage());
                 }
                 break;

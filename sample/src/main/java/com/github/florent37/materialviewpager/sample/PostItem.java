@@ -1,12 +1,15 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -25,9 +28,12 @@ public class PostItem extends RecyclerView.ViewHolder {
     private TextView mPostNumVotes;
     private ImageView mUpvote;
     private ImageView mDownvote;
+    private LinearLayout mToPostDetailClickable;
 
     private String mPostAuthorId;
     private String mPostId;
+
+    private JSONObject mPostObject;
 
     public PostItem(View view) {
         super(view);
@@ -38,12 +44,52 @@ public class PostItem extends RecyclerView.ViewHolder {
         mPostNumVotes = (TextView) view.findViewById(R.id.num_votes);
         mUpvote = (ImageView) view.findViewById(R.id.upvote);
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
+        mToPostDetailClickable = (LinearLayout) view.findViewById(R.id.to_post_detail);
+
+        Log.d("onClick", "has click listeners = " + mPostBody.hasOnClickListeners());
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("onClick", "I've been clicked!");
+                switch(view.getId())
+                {
+                    case R.id.upvote:
+                    {
+                        //TODO
+                        break;
+                    }
+                    case R.id.downvote:
+                    {
+                        //TODO
+                        break;
+                    }
+                    default:
+                    {
+                        Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+                        toDetailIntent.putExtra("postObject", mPostObject.toString());
+                        MainActivity.getInstance().startActivity(toDetailIntent);
+                        break;
+                    }
+
+                }
+            }
+        };
+
+        view.setOnClickListener(onClickListener);
+        mToPostDetailClickable.setClickable(true);
+        mToPostDetailClickable.setOnClickListener(onClickListener);
+        mPostBody.setClickable(true);
+        mPostBody.setOnClickListener(onClickListener);
+
+        Log.d("onClick", "has click listeners (after assign) = " + mPostBody.hasOnClickListeners());
 
     }
 
     public void bindPost(JSONObject post, Map<String, Integer> commentsCountMap) {
 
         try {
+            mPostObject = post;
             String body = post.getString("body");
             Log.d("onBind", "body: " + body);
             String authorId = post.getString("userId");
@@ -75,6 +121,23 @@ public class PostItem extends RecyclerView.ViewHolder {
 //                mDownvote.setImageResource(R.mipmap.downvote);
 //            }
             setNumComments(commentsCountMap);
+//
+//            mToPostDetailClickable.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+//                    toDetailIntent.putExtra("postObject", mPostObject.toString());
+//                }
+//            });
+//
+//            mToPostDetailClickable.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View view, MotionEvent motionEvent) {
+//                    Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+//                    toDetailIntent.putExtra("postObject", mPostObject.toString());
+//                    return false;
+//                }
+//            });
 
         } catch (org.json.JSONException e) {
             Log.d("onBind", e.getMessage());

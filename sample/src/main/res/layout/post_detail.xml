@@ -149,11 +149,11 @@
 
     </LinearLayout>
 
-    <include layout="@layout/post_item" />
-    <include layout="@layout/post_item" />
-    <include layout="@layout/post_item" />
-    <include layout="@layout/post_item" />
-    <include layout="@layout/post_item" />
+    <include layout="@layout/fragment_recyclerview" />
+    <!--<include layout="@layout/post_item" />-->
+    <!--<include layout="@layout/post_item" />-->
+    <!--<include layout="@layout/post_item" />-->
+    <!--<include layout="@layout/post_item" />-->
 
 
 </LinearLayout>

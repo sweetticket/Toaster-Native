@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import junit.framework.Test;
-
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +21,14 @@ public class CustomMaterialAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int mPlaceholderSize = 1;
 
     //the actual RecyclerView.Adapter
-    private TestRecyclerViewAdapter mAdapter;
+    private PostsRecyclerViewAdapter mAdapter;
 
     /**
      * Construct the RecyclerViewMaterialAdapter, which inject a header into an actual RecyclerView.Adapter
      *
      * @param adapter The real RecyclerView.Adapter which displays content
      */
-    public CustomMaterialAdapter(TestRecyclerViewAdapter adapter) {
+    public CustomMaterialAdapter(PostsRecyclerViewAdapter adapter) {
         this.mAdapter = adapter;
 
         registerAdapterObserver();
@@ -42,7 +40,7 @@ public class CustomMaterialAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param adapter         The real RecyclerView.Adapter which displays content
      * @param placeholderSize The number of placeholder items before real items, default is 1
      */
-    public CustomMaterialAdapter(TestRecyclerViewAdapter adapter, int placeholderSize) {
+    public CustomMaterialAdapter(PostsRecyclerViewAdapter adapter, int placeholderSize) {
         this.mAdapter = adapter;
         mPlaceholderSize = placeholderSize;
 

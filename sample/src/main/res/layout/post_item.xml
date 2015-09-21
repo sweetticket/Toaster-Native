@@ -23,6 +23,7 @@
             android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/to_post_detail"
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"

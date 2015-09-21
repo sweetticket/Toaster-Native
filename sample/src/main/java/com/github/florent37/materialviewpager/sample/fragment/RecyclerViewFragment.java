@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,13 +16,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.AppController;
 import com.github.florent37.materialviewpager.sample.CustomMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
 import com.github.florent37.materialviewpager.sample.R;
-import com.github.florent37.materialviewpager.sample.TestRecyclerViewAdapter;
+import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +30,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,7 @@ public class RecyclerViewFragment extends Fragment {
         mPostObjects.clear();
         mCommentsCountMap.clear();
 
-        Log.d("populatePosts", "Just emptiedmPostObjects, length = " + mPostObjects.size());
+        Log.d("populatePosts", "Just emptied mPostObjects, length = " + mPostObjects.size());
 
 //        mPostObjects.add(0, new Object());
 
@@ -90,7 +89,7 @@ public class RecyclerViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new CustomMaterialAdapter(new TestRecyclerViewAdapter(mPostObjects, mCommentsCountMap));
+        mAdapter = new CustomMaterialAdapter(new PostsRecyclerViewAdapter(mPostObjects, mCommentsCountMap));
         mRecyclerView.setAdapter(mAdapter);
         populatePosts();
         mAdapter.updateContents(mPostObjects, mCommentsCountMap);
