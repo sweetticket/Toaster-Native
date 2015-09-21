@@ -46,12 +46,9 @@ public class PostItem extends RecyclerView.ViewHolder {
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
         mToPostDetailClickable = (LinearLayout) view.findViewById(R.id.to_post_detail);
 
-        Log.d("onClick", "has click listeners = " + mPostBody.hasOnClickListeners());
-
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("onClick", "I've been clicked!");
                 switch(view.getId())
                 {
                     case R.id.upvote:
@@ -82,8 +79,6 @@ public class PostItem extends RecyclerView.ViewHolder {
         mPostBody.setClickable(true);
         mPostBody.setOnClickListener(onClickListener);
 
-        Log.d("onClick", "has click listeners (after assign) = " + mPostBody.hasOnClickListeners());
-
     }
 
     public void bindPost(JSONObject post, Map<String, Integer> commentsCountMap) {
@@ -91,18 +86,14 @@ public class PostItem extends RecyclerView.ViewHolder {
         try {
             mPostObject = post;
             String body = post.getString("body");
-            Log.d("onBind", "body: " + body);
             String authorId = post.getString("userId");
-            Log.d("onBind", "author: " + authorId);
 //            String[] upvoterIds = (String[]) post.get("upvoterIds");
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
 //            String[] downvoterIds = (String[]) post.get("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = post.getString("numLikes");
-            Log.d("onBind", "numLikes:" + numLikes);
 //            String createdAt = post.getString("createdAt");
             mPostId = post.getString("_id");
-            Log.d("onBind", "postId: " + mPostId);
 
             mPostBody.setText(body);
             mPostNumVotes.setText(numLikes);
@@ -140,15 +131,13 @@ public class PostItem extends RecyclerView.ViewHolder {
 //            });
 
         } catch (org.json.JSONException e) {
-            Log.d("onBind", e.getMessage());
+            Log.d("bindPost", e.getMessage());
         }
 
 
     }
 
     public void setNumComments(Map<String, Integer> commentsCountMap) {
-
-        Log.d("setNumComments", "commentsCountMap: " + commentsCountMap.toString());
 
         if (commentsCountMap.containsKey(mPostId)) {
             Integer numComments = commentsCountMap.get(mPostId);

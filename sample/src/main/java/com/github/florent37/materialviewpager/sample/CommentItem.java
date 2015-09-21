@@ -27,30 +27,32 @@ public class CommentItem extends RecyclerView.ViewHolder {
     public CommentItem(View view) {
         super(view);
 
-        mCommentBody = (TextView) view.findViewById(R.id.post_body);
-        mCommentDate = (TextView) view.findViewById(R.id.post_date);
+        mCommentBody = (TextView) view.findViewById(R.id.comment_body);
+        mCommentDate = (TextView) view.findViewById(R.id.comment_date);
         mCommentNumVotes = (TextView) view.findViewById(R.id.num_votes);
         mUpvote = (ImageView) view.findViewById(R.id.upvote);
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
 
     }
 
-    public void bindPost(JSONObject post) {
+    public void bindComment(JSONObject comment) {
+
+        Log.d("bindComment", "binding comments!");
 
         try {
-            String body = post.getString("body");
-            Log.d("onBind", "body: " + body);
-            String authorId = post.getString("userId");
-            Log.d("onBind", "author: " + authorId);
+            String body = comment.getString("body");
+            Log.d("bindComment", "body: " + body);
+            String authorId = comment.getString("userId");
+            Log.d("bindComment", "author: " + authorId);
 //            String[] upvoterIds = (String[]) post.get("upvoterIds");
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
 //            String[] downvoterIds = (String[]) post.get("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
-            String numLikes = post.getString("numLikes");
-            Log.d("onBind", "numLikes:" + numLikes);
+            String numLikes = comment.getString("numLikes");
+            Log.d("bindComment", "numLikes:" + numLikes);
 //            String createdAt = post.getString("createdAt");
-            mCommentId = post.getString("_id");
-            Log.d("onBind", "postId: " + mCommentId);
+            mCommentId = comment.getString("_id");
+            Log.d("bindComment", "commentId: " + mCommentId);
 
             mCommentBody.setText(body);
             mCommentNumVotes.setText(numLikes);
@@ -70,7 +72,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
 //            }
 
         } catch (org.json.JSONException e) {
-            Log.d("onBind", e.getMessage());
+            Log.d("bindComment", "Error: " + e.getMessage());
         }
 
 

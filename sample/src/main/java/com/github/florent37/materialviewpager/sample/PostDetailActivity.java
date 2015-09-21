@@ -88,8 +88,7 @@ public class PostDetailActivity extends AppCompatActivity {
         mAdapter = new CommentsRecyclerViewAdapter(mCommentObjects);
         mRecyclerView.setAdapter(mAdapter);
         populateComments();
-        mAdapter.updateContents(mCommentObjects);
-        Log.d("PostDetail", "onCreate: " + mCommentObjects.toString());
+        Log.d("PostDetail", "mCommentObjects = " + mCommentObjects.toString());
 
         MaterialViewPagerHelper.registerRecyclerView(this, mRecyclerView, null);
 
@@ -97,24 +96,21 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void populateComments() {
 
-            mCommentObjects.clear();
+        mCommentObjects.clear();
 
-            Log.d("populateComments", "Just emptied mCommentObjects, length = " + mCommentObjects.size());
-
-            String url = GlobalVariables.ROOT_URL + "/get-comments-for-post/" + mPostId;
-
-
-
+        sendGetCommentRequest();
 
     }
 
-    private void sendCommentRequest() {
+    private void sendGetCommentRequest() {
         // Tag used to cancel the request
         String tag_json_obj = "get_comments_req";
 
         Map<String, String> params = new HashMap<String, String>();
 
-        String url = ""; //TODO
+        String url = GlobalVariables.ROOT_URL + "/get-comments-for-post/" + mPostId;
+
+        Log.d("get_comments_req", "url = " + url);
 
 
         CustomRequest jsonObjReq = new CustomRequest(Request.Method.GET, url, params,
@@ -143,7 +139,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
                             };
 
-//                            Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
+                            Log.d("get_comments_req", "mCommentObjects = " + mCommentObjects.toString());
 
 
                         } catch (org.json.JSONException e) {
@@ -151,6 +147,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         }
 
                         Collections.reverse(mCommentObjects);
+                        mAdapter.updateContents(mCommentObjects);
                         mAdapter.notifyDataSetChanged();
 
 

@@ -56,10 +56,6 @@ public class RecyclerViewFragment extends Fragment {
         mPostObjects.clear();
         mCommentsCountMap.clear();
 
-        Log.d("populatePosts", "Just emptied mPostObjects, length = " + mPostObjects.size());
-
-//        mPostObjects.add(0, new Object());
-
         String url;
 
         if (mPosition == 0) {
@@ -93,7 +89,7 @@ public class RecyclerViewFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         populatePosts();
         mAdapter.updateContents(mPostObjects, mCommentsCountMap);
-        Log.d("onViewCreated", mPostObjects.toString());
+//        Log.d("onViewCreated", mPostObjects.toString());
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
 
@@ -111,14 +107,14 @@ public class RecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("postsandcomments", response.toString());
+//                        Log.d("postsandcomments", response.toString());
 
                         try {
 
                             JSONArray postsJson = response.getJSONArray("posts");
 
-                            Log.d("get_posts_req", postsJson.toString());
-                            Log.d("get_posts_req", "json.length() = " + postsJson.length());
+//                            Log.d("get_posts_req", postsJson.toString());
+//                            Log.d("get_posts_req", "json.length() = " + postsJson.length());
 
                             for (int i = 0; i < postsJson.length(); i++) {
 

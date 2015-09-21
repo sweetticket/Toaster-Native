@@ -24,7 +24,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public CommentsRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
 
-        Log.d("contents", "contents: " + contents.toString());
+        Log.d("contents", "comment contents: " + contents.toString());
     }
 
     public void updateContents(List<Object> newContents) {
@@ -34,12 +34,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemViewType(int position) {
-        switch (position) {
-            case 0:
-                return TYPE_HEADER;
-            default:
+//        switch (position) {
+//            case 0:
+//                return TYPE_HEADER;
+//            default:
                 return TYPE_CELL;
-        }
+//        }
     }
 
     @Override
@@ -49,40 +49,21 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.comment_item, parent, false);
+        return new CommentItem(view) {
+        };
 
-        switch (viewType) {
-            case TYPE_HEADER: {
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.new_post_item, parent, false);
-                NewPostItem newpostitem = new NewPostItem(view);
-                newpostitem.setAdapter(this);
-                return newpostitem;
-            }
-            case TYPE_CELL: {
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.post_item, parent, false);
-                return new PostItem(view) {
-                };
-            }
-        }
-        return null;
     }
 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case TYPE_HEADER:
-                break;
-            case TYPE_CELL:
-                try {
-                    Log.d("onBindViewHolder", "contents: " +  contents.toString());
-                    ((CommentItem) holder).bindPost((JSONObject) contents.get(position));
-                } catch (ClassCastException e) {
-                    Log.d("onBindViewHolder", e.getMessage());
-                }
-                break;
+        try {
+            Log.d("onBindViewHolder", "comment contents: " + contents.toString());
+            ((CommentItem) holder).bindComment((JSONObject) contents.get(position));
+        } catch (ClassCastException e) {
+            Log.d("onBindViewHolder", "Error: " + e.getMessage());
         }
     }
 }

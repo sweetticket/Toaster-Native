@@ -26,8 +26,8 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.contents = contents;
         this.mCommentsCountMap = commentsCountMap;
 
-        Log.d("contents", "contents: " + contents.toString());
-        Log.d("mCommentsCountMap", "mCommentsCountMap: " + mCommentsCountMap.toString());
+//        Log.d("contents", "contents: " + contents.toString());
+//        Log.d("mCommentsCountMap", "mCommentsCountMap: " + mCommentsCountMap.toString());
     }
 
     public void updateContents(List<Object> newContents, Map<String, Integer> newCommentsCountMap) {
@@ -81,7 +81,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 break;
             case TYPE_CELL:
                 try {
-                    Log.d("onBindViewHolder", "contents: " +  contents.toString());
+//                    Log.d("onBindViewHolder", "contents: " +  contents.toString());
                     ((PostItem) holder).bindPost((JSONObject) contents.get(position), mCommentsCountMap);
                 } catch (java.lang.ClassCastException e) {
                     Log.d("onBindViewHolder", e.getMessage());
