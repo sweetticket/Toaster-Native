@@ -1,5 +1,6 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,16 +32,20 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity {
 
     private MaterialViewPager mViewPager;
-
+    private static MainActivity mInstance;
     private DrawerLayout mDrawer;
     private String[] mDrawerArray;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
+    private RecyclerViewFragment mRecentFragment;
+    private RecyclerViewFragment mTrendingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mInstance = this;
 
         setContentView(R.layout.activity_main);
 
@@ -84,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position % 2) {
                     case 0:
-                        RecyclerViewFragment recentFragment =  RecyclerViewFragment.newInstance();
-                        recentFragment.setPosition(0);
-                        return recentFragment;
+                        mRecentFragment =  RecyclerViewFragment.newInstance();
+                        mRecentFragment.setPosition(0);
+                        return mRecentFragment;
                     case 1:
-                        RecyclerViewFragment trendingFragment =  RecyclerViewFragment.newInstance();
-                        trendingFragment.setPosition(1);
-                        return trendingFragment;
+                        mTrendingFragment =  RecyclerViewFragment.newInstance();
+                        mTrendingFragment.setPosition(1);
+                        return mTrendingFragment;
                     //case 2:
                     //    return WebViewFragment.newInstance();
                     default:
@@ -159,6 +165,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static synchronized MainActivity getInstance() {
+        return mInstance;
+    }
+
+    public RecyclerViewFragment getFragment(int position) {
+        if (position == 0) {
+            return mRecentFragment;
+        } else {
+            return mTrendingFragment;
+        }
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -196,5 +214,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setItemChecked(position, true);
 //        setTitle(mDrawerArray[position]);
         mDrawer.closeDrawer(mDrawerList);
+    }
+
+    public void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

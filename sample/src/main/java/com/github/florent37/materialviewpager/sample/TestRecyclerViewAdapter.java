@@ -22,7 +22,7 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public TestRecyclerViewAdapter(List<Object> contents) {
         this.contents = contents;
-        // add empty head for 'new post' card
+
         Log.d("contents", "contents: " + contents.toString());
     }
 
@@ -54,8 +54,9 @@ public class TestRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.new_post_item, parent, false);
-                return new NewPostItem(view) {
-                };
+                NewPostItem newpostitem = new NewPostItem(view);
+                newpostitem.setAdapter(this);
+                return newpostitem;
             }
             case TYPE_CELL: {
                 view = LayoutInflater.from(parent.getContext())

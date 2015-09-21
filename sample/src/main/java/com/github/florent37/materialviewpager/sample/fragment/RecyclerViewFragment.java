@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,9 +53,11 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     public void populatePosts() {
-
         mPostObjects.clear();
-        mPostObjects.add(0, new Object());
+
+        Log.d("populatePosts", "Just emptiedmPostObjects, length = " + mPostObjects.size());
+
+//        mPostObjects.add(0, new Object());
 
         String url;
 
@@ -90,7 +93,6 @@ public class RecyclerViewFragment extends Fragment {
                             for (int i = 0; i < json.length(); i++) {
 
                                 try {
-                                    Log.d("get_posts_req", "json.getJSONObject(" + i + ") = " + json.getJSONObject(i));
                                     mPostObjects.add(json.getJSONObject(i));
                                 }
                                 catch (JSONException e) {
@@ -100,14 +102,16 @@ public class RecyclerViewFragment extends Fragment {
 
                             };
 
-                            Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
-
+//                            Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
 
 
                         } catch (org.json.JSONException e) {
                             Log.d("get_posts_req", e.getMessage());
                         }
 
+                        Collections.reverse(mPostObjects);
+                        // add empty head for 'new post' card
+                        mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
 
                     }
