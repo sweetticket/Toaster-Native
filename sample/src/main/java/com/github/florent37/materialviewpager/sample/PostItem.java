@@ -32,6 +32,8 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     private String mPostAuthorId;
     private String mPostId;
+    private String mUpvoterIds; // string representation of string array
+    private String mDownvoterIds;
 
     private JSONObject mPostObject;
 
@@ -87,9 +89,9 @@ public class PostItem extends RecyclerView.ViewHolder {
             mPostObject = post;
             String body = post.getString("body");
             String authorId = post.getString("userId");
-//            String[] upvoterIds = (String[]) post.get("upvoterIds");
+            mUpvoterIds = post.getString("upvoterIds");
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
-//            String[] downvoterIds = (String[]) post.get("downvoterIds");
+            mDownvoterIds = post.getString("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = post.getString("numLikes");
 //            String createdAt = post.getString("createdAt");
@@ -97,38 +99,20 @@ public class PostItem extends RecyclerView.ViewHolder {
 
             mPostBody.setText(body);
             mPostNumVotes.setText(numLikes);
+
+            if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+                mUpvote.setImageResource(R.mipmap.upvote_active);
+            } else {
+                mUpvote.setImageResource((R.mipmap.upvote));
+            }
+            if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+                mDownvote.setImageResource(R.mipmap.downvote_active);
+            } else {
+                mDownvote.setImageResource(R.mipmap.downvote);
+            }
 //            mPostDate.setText(createdAt);
 
-//            if (Arrays.asList(upvoterIds).contains(GlobalVariables.mUserId)) {
-//                mUpvote.setImageResource(R.mipmap.upvote_active);
-//
-//            } else {
-//                mUpvote.setImageResource(R.mipmap.upvote);
-//            }
-//
-//            if (Arrays.asList(downvoterIds).contains(GlobalVariables.mUserId)){
-//                mDownvote.setImageResource(R.mipmap.downvote_active);
-//            } else {
-//                mDownvote.setImageResource(R.mipmap.downvote);
-//            }
             setNumComments(commentsCountMap);
-//
-//            mToPostDetailClickable.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
-//                    toDetailIntent.putExtra("postObject", mPostObject.toString());
-//                }
-//            });
-//
-//            mToPostDetailClickable.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View view, MotionEvent motionEvent) {
-//                    Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
-//                    toDetailIntent.putExtra("postObject", mPostObject.toString());
-//                    return false;
-//                }
-//            });
 
         } catch (org.json.JSONException e) {
             Log.d("bindPost", e.getMessage());

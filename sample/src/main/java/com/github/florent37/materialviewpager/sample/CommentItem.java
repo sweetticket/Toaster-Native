@@ -24,6 +24,8 @@ public class CommentItem extends RecyclerView.ViewHolder {
 
     private String mCommentAuthorId;
     private String mCommentId;
+    private String mUpvoterIds;
+    private String mDownvoterIds;
 
     public CommentItem(View view) {
         super(view);
@@ -46,9 +48,9 @@ public class CommentItem extends RecyclerView.ViewHolder {
             Log.d("bindComment", "body: " + body);
             String authorId = comment.getString("userId");
             Log.d("bindComment", "author: " + authorId);
-//            String[] upvoterIds = (String[]) post.get("upvoterIds");
+            mUpvoterIds = comment.getString("upvoterIds");
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
-//            String[] downvoterIds = (String[]) post.get("downvoterIds");
+            mDownvoterIds = comment.getString("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = comment.getString("numLikes");
             Log.d("bindComment", "numLikes:" + numLikes);
@@ -63,18 +65,16 @@ public class CommentItem extends RecyclerView.ViewHolder {
             mCommentNameTag.setText("by " + nameTag);
 //            mCommentDate.setText(createdAt);
 
-//            if (Arrays.asList(upvoterIds).contains(GlobalVariables.mUserId)) {
-//                mUpvote.setImageResource(R.mipmap.upvote_active);
-//
-//            } else {
-//                mUpvote.setImageResource(R.mipmap.upvote);
-//            }
-//
-//            if (Arrays.asList(downvoterIds).contains(GlobalVariables.mUserId)){
-//                mDownvote.setImageResource(R.mipmap.downvote_active);
-//            } else {
-//                mDownvote.setImageResource(R.mipmap.downvote);
-//            }
+            if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+                mUpvote.setImageResource(R.mipmap.upvote_active);
+            } else {
+                mUpvote.setImageResource((R.mipmap.upvote));
+            }
+            if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+                mDownvote.setImageResource(R.mipmap.downvote_active);
+            } else {
+                mDownvote.setImageResource(R.mipmap.downvote);
+            }
 
         } catch (org.json.JSONException e) {
             Log.d("bindComment", "Error: " + e.getMessage());
