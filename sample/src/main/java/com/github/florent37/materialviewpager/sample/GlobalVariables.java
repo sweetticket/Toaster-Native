@@ -7,5 +7,8 @@ public class GlobalVariables {
     public static String mUserId;
     public static String mToken;
     public static String mTokenExp;
-    public static final String ROOT_URL = "http://192.168.0.106:3000";
+    // Howon's house
+//    public static final String ROOT_URL = "http://192.168.0.106:3000";
+    // Redrover
+    public static final String ROOT_URL ="http://10.145.14.158:3000";
 }

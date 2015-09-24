@@ -6,7 +6,15 @@
     android:layout_height="match_parent"
     android:gravity="fill|fill_vertical"
     android:fitsSystemWindows="true">
-<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
     android:id="@+id/scrollView"
     android:fillViewport="true"
     android:layout_width="match_parent"
@@ -36,7 +44,7 @@
             android:layout_marginBottom="@dimen/cardMarginVertical"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginTop="@dimen/cardMarginVertical"
+            android:layout_marginTop="0dp"
             app:cardPreventCornerOverlap="false"
             app:contentPadding="0dp">
 
