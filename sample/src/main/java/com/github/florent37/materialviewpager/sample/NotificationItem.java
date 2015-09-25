@@ -88,9 +88,9 @@ public class NotificationItem extends RecyclerView.ViewHolder {
             }
 
             if (isRead == "false") {
-                mCardContent.setBackgroundColor(R.color.Highlight);
+                mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.Highlight));
             } else {
-                mCardContent.setBackgroundColor(R.color.White);
+                mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.White));
             }
 
         } catch (JSONException e) {
