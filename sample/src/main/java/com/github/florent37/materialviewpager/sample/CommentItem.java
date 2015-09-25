@@ -29,6 +29,8 @@ public class CommentItem extends RecyclerView.ViewHolder {
     private String mCommentId;
     private String mUpvoterIds;
     private String mDownvoterIds;
+    private boolean mHasUpvoted;
+    private boolean mHasDownvoted;
 
     public CommentItem(View view) {
         super(view);
@@ -48,17 +50,13 @@ public class CommentItem extends RecyclerView.ViewHolder {
 
         try {
             String body = comment.getString("body");
-//            Log.d("bindComment", "body: " + body);
             String authorId = comment.getString("userId");
-//            Log.d("bindComment", "author: " + authorId);
-            mUpvoterIds = comment.getString("upvoterIds");
-//            Log.d("onBind", "upvotersIds:" + upvoterIds);
-            mDownvoterIds = comment.getString("downvoterIds");
-//            Log.d("onBind", "downvoterIds:" + downvoterIds);
+            String upvoterIds = comment.getString("upvoterIds");
+            mHasUpvoted = upvoterIds.contains(GlobalVariables.mUserId);
+            String downvoterIds = comment.getString("downvoterIds");
+            mHasDownvoted = downvoterIds.contains(GlobalVariables.mUserId);
             String numLikes = comment.getString("numLikes");
-//            Log.d("bindComment", "numLikes:" + numLikes);
             mCommentId = comment.getString("_id");
-//            Log.d("bindComment", "commentId: " + mCommentId);
 
             String nameTag = comment.getString("nameTag");
 
@@ -75,16 +73,87 @@ public class CommentItem extends RecyclerView.ViewHolder {
                 Log.d("bindPost", "createdAt Error: " + e.getMessage());
             }
 
-            if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+            if (mHasUpvoted) {
                 mUpvote.setImageResource(R.mipmap.upvote_active);
             } else {
                 mUpvote.setImageResource((R.mipmap.upvote));
             }
-            if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+            if (mHasDownvoted) {
                 mDownvote.setImageResource(R.mipmap.downvote_active);
             } else {
                 mDownvote.setImageResource(R.mipmap.downvote);
             }
+
+            mUpvote.setClickable(true);
+            mUpvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer numLikes = Integer.parseInt(mCommentNumVotes.getText().toString());
+                    if (mHasDownvoted) {
+                        mDownvote.setImageResource(R.mipmap.downvote);
+                        mUpvote.setImageResource(R.mipmap.upvote_active);
+                        mCommentNumVotes.setText((numLikes + 2) + "");
+                        mHasDownvoted = false;
+                        mHasUpvoted = true;
+                    } else if (mHasUpvoted) {
+                        mUpvote.setImageResource(R.mipmap.upvote);
+                        mCommentNumVotes.setText((numLikes - 1) + "");
+                        mHasUpvoted = false;
+                    } else {
+                        mUpvote.setImageResource(R.mipmap.upvote_active);
+                        mCommentNumVotes.setText((numLikes + 1) + "");
+                        mHasUpvoted = true;
+                    }
+                    VotingRequests.sendCommentUpvoteRequest(mCommentId);
+                }
+            });
+            mCommentNumVotes.setClickable(true);
+            mCommentNumVotes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer numLikes = Integer.parseInt(mCommentNumVotes.getText().toString());
+                    if (mHasDownvoted) {
+                        mDownvote.setImageResource(R.mipmap.downvote);
+                        mUpvote.setImageResource(R.mipmap.upvote_active);
+                        mCommentNumVotes.setText((numLikes + 2) + "");
+                        mHasDownvoted = false;
+                        mHasUpvoted = true;
+                    } else if (mHasUpvoted) {
+                        mUpvote.setImageResource(R.mipmap.upvote);
+                        mCommentNumVotes.setText((numLikes - 1) + "");
+                        mHasUpvoted = false;
+                    } else {
+                        mUpvote.setImageResource(R.mipmap.upvote_active);
+                        mCommentNumVotes.setText((numLikes + 1) + "");
+                        mHasUpvoted = true;
+                    }
+                    VotingRequests.sendCommentUpvoteRequest(mCommentId);
+                }
+            });
+
+            mDownvote.setClickable(true);
+            mDownvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer numLikes = Integer.parseInt(mCommentNumVotes.getText().toString());
+                    if (mHasUpvoted) {
+                        mUpvote.setImageResource(R.mipmap.upvote);
+                        mDownvote.setImageResource(R.mipmap.downvote_active);
+                        mCommentNumVotes.setText((numLikes - 2) + "");
+                        mHasUpvoted = false;
+                        mHasDownvoted = true;
+                    } else if (mHasDownvoted) {
+                        mDownvote.setImageResource(R.mipmap.downvote);
+                        mCommentNumVotes.setText((numLikes + 1) + "");
+                        mHasDownvoted = false;
+                    } else {
+                        mDownvote.setImageResource(R.mipmap.downvote_active);
+                        mCommentNumVotes.setText((numLikes - 1) + "");
+                        mHasDownvoted = true;
+                    }
+                    VotingRequests.sendCommentDownvoteRequest(mCommentId);
+                }
+            });
 
         } catch (org.json.JSONException e) {
             Log.d("bindComment", "Error: " + e.getMessage());

@@ -19,7 +19,7 @@ public class VotingRequests {
 
     public static void sendPostUpvoteRequest(String postId) {
         // Tag used to cancel the request
-        String tag_json_obj = "upvote_req";
+        String tag_json_obj = "post_upvote_req";
 
         String url = GlobalVariables.ROOT_URL + "/api/posts/upvote";
 
@@ -34,13 +34,13 @@ public class VotingRequests {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("upvote_req", "upvote success");
+                        Log.d("post_upvote_req", "upvote success");
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                    Log.d("upvote_req", "Error: " + error.getMessage());
+//                    Log.d("post_downvote_req", "Error: " + error.getMessage());
             }
         }) {
 
@@ -59,7 +59,7 @@ public class VotingRequests {
 
     public static void sendPostDownvoteRequest(String postId) {
         // Tag used to cancel the request
-        String tag_json_obj = "downvote_req";
+        String tag_json_obj = "post_downvote_req";
 
         String url = GlobalVariables.ROOT_URL + "/api/posts/downvote";
 
@@ -74,13 +74,92 @@ public class VotingRequests {
 
                     @Override
                     public void onResponse(JSONObject response) {
-//                        Log.d("downvote_req", "downvote success");
+                        Log.d("post_downvote_req", "downvote success");
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("downvote_req", "Error: " + error.getMessage());
+//                Log.d("post_downvote_req", "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                return headers;
+            }
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+    }
+
+    public static void sendCommentUpvoteRequest(String commentId) {
+        // Tag used to cancel the request
+        String tag_json_obj = "comment_upvote_req";
+
+        String url = GlobalVariables.ROOT_URL + "/api/comments/upvote";
+
+
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("commentId", commentId);
+
+
+        CustomRequest jsonObjReq = new CustomRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("comment_upvote_req", "upvote success");
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                    Log.d("comment_upvote_req", "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                return headers;
+            }
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+
+    }
+
+    public static void sendCommentDownvoteRequest(String commentId) {
+        // Tag used to cancel the request
+        String tag_json_obj = "comment_downvote_req";
+
+        String url = GlobalVariables.ROOT_URL + "/api/comments/downvote";
+
+
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("commentId", commentId);
+
+
+        CustomRequest jsonObjReq = new CustomRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("comment_downvote_req", "downvote success");
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Log.d("comment_downvote_req", "Error: " + error.getMessage());
             }
         }) {
 

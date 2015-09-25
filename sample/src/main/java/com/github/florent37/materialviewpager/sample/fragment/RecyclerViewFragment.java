@@ -23,6 +23,7 @@ import com.github.florent37.materialviewpager.sample.GlobalVariables;
 import com.github.florent37.materialviewpager.sample.R;
 import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
 import com.github.florent37.materialviewpager.sample.RecentComparator;
+import com.github.florent37.materialviewpager.sample.TrendingComparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,7 +110,7 @@ public class RecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-//                        Log.d("postsandcomments", response.toString());
+                        Log.d("postsandcomments", response.toString());
 
                         try {
 
@@ -139,7 +140,11 @@ public class RecyclerViewFragment extends Fragment {
                             Log.d("get_posts_req", e.getMessage());
                         }
 
-                        Collections.sort(mPostObjects, new RecentComparator());
+                        if (mPosition == 0) {
+                            Collections.sort(mPostObjects, new RecentComparator());
+                        } else {
+                            Collections.sort(mPostObjects, new TrendingComparator());
+                        }
                         // add empty head for 'new post' card
                         mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
