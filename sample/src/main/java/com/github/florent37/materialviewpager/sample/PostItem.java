@@ -12,12 +12,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.ocpsoft.pretty.time.PrettyTime;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,63 +60,16 @@ public class PostItem extends RecyclerView.ViewHolder {
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
         mToPostDetailClickable = (LinearLayout) view.findViewById(R.id.to_post_detail);
 
-//        View.OnClickListener onClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
-//                Log.d("onClick", view.getId() + "");
-//                switch (view.getId()) {
-//                    case R.id.upvote: {
-//                        if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
-//                            mDownvote.setImageResource((R.mipmap.downvote));
-//                            mUpvote.setImageResource(R.mipmap.upvote_active);
-//                            mPostNumVotes.setText(numLikes + 2);
-//                        } else if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
-//                            mUpvote.setImageResource((R.mipmap.upvote));
-//                            mPostNumVotes.setText(numLikes - 1);
-//                        } else {
-//                            mUpvote.setImageResource((R.mipmap.upvote_active));
-//                            mPostNumVotes.setText(numLikes + 1);
-//                        }
-//                        break;
-//                    }
-//                    case R.id.downvote: {
-//                        if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
-//                            mUpvote.setImageResource((R.mipmap.upvote));
-//                            mDownvote.setImageResource(R.mipmap.downvote_active);
-//                            mPostNumVotes.setText(numLikes - 2);
-//                        } else if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
-//                            mDownvote.setImageResource((R.mipmap.downvote));
-//                            mPostNumVotes.setText(numLikes + 1);
-//                        } else {
-//                            mDownvote.setImageResource((R.mipmap.downvote_active));
-//                            mPostNumVotes.setText(numLikes - 1);
-//                        }
-//                        break;
-//                    }
-//                    case R.id.to_post_detail: {
-//                        Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
-//                        toDetailIntent.putExtra("postObject", mPostObject.toString());
-//                        MainActivity.getInstance().startActivity(toDetailIntent);
-//                        break;
-//                    }
-//                    default:
-//                        break;
-//
-//                }
-//            }
-//        };
-
-//        view.setOnClickListener(onClickListener);
-        mToPostDetailClickable.setClickable(true);
-        mToPostDetailClickable.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener toPostDetailListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
-                toDetailIntent.putExtra("postObject", mPostObject.toString());
-                MainActivity.getInstance().startActivity(toDetailIntent);
+                toPostDetail();
             }
-        });
+        };
+        mPostBody.setClickable(true);
+        mPostBody.setOnClickListener(toPostDetailListener);
+        view.setClickable(true);
+        view.setOnClickListener(toPostDetailListener);
         mUpvote.setClickable(true);
         mUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +90,33 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mPostNumVotes.setText((numLikes + 1) + "");
                     mHasUpvoted = true;
                 }
+                VotingRequests.sendPostUpvoteRequest(mPostId);
             }
         });
+        mPostNumVotes.setClickable(true);
+        mPostNumVotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 2) + "");
+                    mHasDownvoted = false;
+                    mHasUpvoted = true;
+                } else if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasUpvoted = false;
+                } else {
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasUpvoted = true;
+                }
+                VotingRequests.sendPostUpvoteRequest(mPostId);
+            }
+        });
+
         mDownvote.setClickable(true);
         mDownvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +137,7 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mPostNumVotes.setText((numLikes - 1) + "");
                     mHasDownvoted = true;
                 }
+                VotingRequests.sendPostDownvoteRequest(mPostId);
             }
         });
 
@@ -218,12 +205,51 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     }
 
-    private void sendUpvoteRequest() {
+    private void toPostDetail() {
+        // Tag used to cancel the request
+        String tag_json_obj = "get_post_detail";
 
-    }
+        Map<String, String> params = new HashMap<String, String>();
 
-    private void sendDownvoteRequest() {
+        String url = GlobalVariables.ROOT_URL + "/get-post/" + mPostId;
 
+        CustomRequest jsonObjReq = new CustomRequest(Request.Method.GET, url, params,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                        Log.d("get_post_detail", "response =  " + response.toString());
+
+                        try {
+                            JSONObject postDetailObj = response.getJSONArray("posts").getJSONObject(0);
+                            Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+                            toDetailIntent.putExtra("postObject", postDetailObj.toString());
+                            MainActivity.getInstance().startActivity(toDetailIntent);
+                            MainActivity.getInstance().finish();
+                        } catch (org.json.JSONException e) {
+                            Log.d("get_post_detail", e.getMessage());
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("get_post_detail", "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                return headers;
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
 

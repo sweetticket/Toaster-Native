@@ -1,6 +1,7 @@
 package com.github.florent37.materialviewpager.sample;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,6 +60,8 @@ public class PostDetailActivity extends AppCompatActivity {
     private ImageView mDownvote;
     private Button mSubmitBtn;
     Toolbar mToolbar;
+    private boolean mHasUpvoted;
+    private boolean mHasDownvoted;
 
 
     public static synchronized PostDetailActivity getInstance() {
@@ -115,6 +118,21 @@ public class PostDetailActivity extends AppCompatActivity {
                 mPostId = mPostObject.get("_id").toString();
                 mPostBody.setText(mPostObject.get("body").toString());
                 mPostNumVotes.setText(mPostObject.get("numLikes").toString());
+                String upvoterIds = mPostObject.getString("upvoterIds");
+                mHasUpvoted = upvoterIds.contains(GlobalVariables.mUserId);
+                String downvoterIds = mPostObject.getString("downvoterIds");
+                mHasDownvoted = downvoterIds.contains(GlobalVariables.mUserId);
+
+                if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                } else {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                }
+                if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote_active);
+                } else {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                }
 
                 try {
                     Date createdAt = ISO8601DateParser.parse(mPostObject.getString("createdAt"));
@@ -130,6 +148,77 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         }
 
+        mUpvote.setClickable(true);
+        mUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 2) + "");
+                    mHasDownvoted = false;
+                    mHasUpvoted = true;
+                } else if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasUpvoted = false;
+                } else {
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasUpvoted = true;
+                }
+                VotingRequests.sendPostUpvoteRequest(mPostId);
+            }
+        });
+        mPostNumVotes.setClickable(true);
+        mPostNumVotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 2) + "");
+                    mHasDownvoted = false;
+                    mHasUpvoted = true;
+                } else if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasUpvoted = false;
+                } else {
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasUpvoted = true;
+                }
+                VotingRequests.sendPostUpvoteRequest(mPostId);
+            }
+        });
+
+        mDownvote.setClickable(true);
+        mDownvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mDownvote.setImageResource(R.mipmap.downvote_active);
+                    mPostNumVotes.setText((numLikes - 2) + "");
+                    mHasUpvoted = false;
+                    mHasDownvoted = true;
+                } else if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasDownvoted = false;
+                } else {
+                    mDownvote.setImageResource(R.mipmap.downvote_active);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasDownvoted = true;
+                }
+                VotingRequests.sendPostDownvoteRequest(mPostId);
+            }
+        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -142,6 +231,13 @@ public class PostDetailActivity extends AppCompatActivity {
 
         MaterialViewPagerHelper.registerRecyclerView(this, mRecyclerView, null);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent toMainIntent = new Intent(MainActivity.getInstance(), MainActivity.class);
+        MainActivity.getInstance().startActivity(toMainIntent);
+        finish();
     }
 
     private void populateComments() {

@@ -104,7 +104,7 @@
                     android:src="@mipmap/upvote"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:duplicateParentState="false"/>
+                    android:duplicateParentState="true"/>
 
                 <TextView
                     android:id="@+id/num_votes"
@@ -116,7 +116,7 @@
                     android:textAlignment="center"
                     android:gravity="center"
                     android:textColor="@color/ColorPrimary"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"/>
 
                 <ImageView
                     android:id="@+id/downvote"
@@ -127,7 +127,7 @@
                     android:src="@mipmap/downvote"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:duplicateParentState="false"/>
+                    android:duplicateParentState="true"/>
 
             </LinearLayout>
 
