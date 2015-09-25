@@ -103,7 +103,8 @@
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/upvote"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp" />
+                    android:paddingRight="8dp"
+                    android:duplicateParentState="false"/>
 
                 <TextView
                     android:id="@+id/num_votes"
@@ -125,7 +126,8 @@
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/downvote"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp" />
+                    android:paddingRight="8dp"
+                    android:duplicateParentState="false"/>
 
             </LinearLayout>
 

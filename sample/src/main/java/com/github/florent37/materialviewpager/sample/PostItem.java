@@ -35,8 +35,9 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     private String mPostAuthorId;
     private String mPostId;
-    private String mUpvoterIds; // string representation of string array
-    private String mDownvoterIds;
+
+    private boolean mHasUpvoted;
+    private boolean mHasDownvoted;
 
     private JSONObject mPostObject;
 
@@ -51,38 +52,107 @@ public class PostItem extends RecyclerView.ViewHolder {
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
         mToPostDetailClickable = (LinearLayout) view.findViewById(R.id.to_post_detail);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+//        View.OnClickListener onClickListener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+//                Log.d("onClick", view.getId() + "");
+//                switch (view.getId()) {
+//                    case R.id.upvote: {
+//                        if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+//                            mDownvote.setImageResource((R.mipmap.downvote));
+//                            mUpvote.setImageResource(R.mipmap.upvote_active);
+//                            mPostNumVotes.setText(numLikes + 2);
+//                        } else if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+//                            mUpvote.setImageResource((R.mipmap.upvote));
+//                            mPostNumVotes.setText(numLikes - 1);
+//                        } else {
+//                            mUpvote.setImageResource((R.mipmap.upvote_active));
+//                            mPostNumVotes.setText(numLikes + 1);
+//                        }
+//                        break;
+//                    }
+//                    case R.id.downvote: {
+//                        if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+//                            mUpvote.setImageResource((R.mipmap.upvote));
+//                            mDownvote.setImageResource(R.mipmap.downvote_active);
+//                            mPostNumVotes.setText(numLikes - 2);
+//                        } else if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+//                            mDownvote.setImageResource((R.mipmap.downvote));
+//                            mPostNumVotes.setText(numLikes + 1);
+//                        } else {
+//                            mDownvote.setImageResource((R.mipmap.downvote_active));
+//                            mPostNumVotes.setText(numLikes - 1);
+//                        }
+//                        break;
+//                    }
+//                    case R.id.to_post_detail: {
+//                        Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+//                        toDetailIntent.putExtra("postObject", mPostObject.toString());
+//                        MainActivity.getInstance().startActivity(toDetailIntent);
+//                        break;
+//                    }
+//                    default:
+//                        break;
+//
+//                }
+//            }
+//        };
+
+//        view.setOnClickListener(onClickListener);
+        mToPostDetailClickable.setClickable(true);
+        mToPostDetailClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch(view.getId())
-                {
-                    case R.id.upvote:
-                    {
-                        //TODO
-                        break;
-                    }
-                    case R.id.downvote:
-                    {
-                        //TODO
-                        break;
-                    }
-                    default:
-                    {
-                        Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
-                        toDetailIntent.putExtra("postObject", mPostObject.toString());
-                        MainActivity.getInstance().startActivity(toDetailIntent);
-                        break;
-                    }
-
+                Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
+                toDetailIntent.putExtra("postObject", mPostObject.toString());
+                MainActivity.getInstance().startActivity(toDetailIntent);
+            }
+        });
+        mUpvote.setClickable(true);
+        mUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 2) + "");
+                    mHasDownvoted = false;
+                    mHasUpvoted = true;
+                } else if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasUpvoted = false;
+                } else {
+                    mUpvote.setImageResource(R.mipmap.upvote_active);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasUpvoted = true;
                 }
             }
-        };
-
-        view.setOnClickListener(onClickListener);
-        mToPostDetailClickable.setClickable(true);
-        mToPostDetailClickable.setOnClickListener(onClickListener);
-        mPostBody.setClickable(true);
-        mPostBody.setOnClickListener(onClickListener);
+        });
+        mDownvote.setClickable(true);
+        mDownvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
+                if (mHasUpvoted) {
+                    mUpvote.setImageResource(R.mipmap.upvote);
+                    mDownvote.setImageResource(R.mipmap.downvote_active);
+                    mPostNumVotes.setText((numLikes - 2) + "");
+                    mHasUpvoted = false;
+                    mHasDownvoted = true;
+                } else if (mHasDownvoted) {
+                    mDownvote.setImageResource(R.mipmap.downvote);
+                    mPostNumVotes.setText((numLikes + 1) + "");
+                    mHasDownvoted = false;
+                } else {
+                    mDownvote.setImageResource(R.mipmap.downvote_active);
+                    mPostNumVotes.setText((numLikes - 1) + "");
+                    mHasDownvoted = true;
+                }
+            }
+        });
 
     }
 
@@ -92,9 +162,11 @@ public class PostItem extends RecyclerView.ViewHolder {
             mPostObject = post;
             String body = post.getString("body");
             String authorId = post.getString("userId");
-            mUpvoterIds = post.getString("upvoterIds");
+            String upvoterIds = post.getString("upvoterIds");
+            mHasUpvoted = upvoterIds.contains(GlobalVariables.mUserId);
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
-            mDownvoterIds = post.getString("downvoterIds");
+            String downvoterIds = post.getString("downvoterIds");
+            mHasDownvoted = downvoterIds.contains(GlobalVariables.mUserId);
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = post.getString("numLikes");
             try {
@@ -102,7 +174,7 @@ public class PostItem extends RecyclerView.ViewHolder {
                 PrettyTime p = new PrettyTime();
                 mPostDate.setText(p.format(createdAt));
 
-            } catch (java.text.ParseException e){
+            } catch (java.text.ParseException e) {
                 Log.d("bindPost", "createdAt Error: " + e.getMessage());
             }
             mPostId = post.getString("_id");
@@ -110,12 +182,12 @@ public class PostItem extends RecyclerView.ViewHolder {
             mPostBody.setText(body);
             mPostNumVotes.setText(numLikes);
 
-            if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
+            if (mHasUpvoted) {
                 mUpvote.setImageResource(R.mipmap.upvote_active);
             } else {
-                mUpvote.setImageResource((R.mipmap.upvote));
+                mUpvote.setImageResource(R.mipmap.upvote);
             }
-            if (mDownvoterIds.contains(GlobalVariables.mUserId)) {
+            if (mHasDownvoted) {
                 mDownvote.setImageResource(R.mipmap.downvote_active);
             } else {
                 mDownvote.setImageResource(R.mipmap.downvote);
@@ -143,6 +215,14 @@ public class PostItem extends RecyclerView.ViewHolder {
         } else {
             mPostNumComments.setText("0 Comments");
         }
+
+    }
+
+    private void sendUpvoteRequest() {
+
+    }
+
+    private void sendDownvoteRequest() {
 
     }
 
