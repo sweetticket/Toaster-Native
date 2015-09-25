@@ -110,7 +110,7 @@ public class RecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("postsandcomments", response.toString());
+//                        Log.d("postsandcomments", response.toString());
 
                         try {
 
