@@ -187,6 +187,7 @@ public class PostDetailActivity extends AppCompatActivity {
                             Log.d("get_comments_req", e.getMessage());
                         }
 
+                        Collections.sort(mCommentObjects, new CommentsComparator());
                         mAdapter.updateContents(mCommentObjects);
                         mAdapter.notifyDataSetChanged();
 

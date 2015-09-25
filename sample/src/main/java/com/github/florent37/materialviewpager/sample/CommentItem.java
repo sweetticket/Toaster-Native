@@ -45,18 +45,18 @@ public class CommentItem extends RecyclerView.ViewHolder {
 
         try {
             String body = comment.getString("body");
-            Log.d("bindComment", "body: " + body);
+//            Log.d("bindComment", "body: " + body);
             String authorId = comment.getString("userId");
-            Log.d("bindComment", "author: " + authorId);
+//            Log.d("bindComment", "author: " + authorId);
             mUpvoterIds = comment.getString("upvoterIds");
 //            Log.d("onBind", "upvotersIds:" + upvoterIds);
             mDownvoterIds = comment.getString("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = comment.getString("numLikes");
-            Log.d("bindComment", "numLikes:" + numLikes);
+//            Log.d("bindComment", "numLikes:" + numLikes);
 //            String createdAt = post.getString("createdAt");
             mCommentId = comment.getString("_id");
-            Log.d("bindComment", "commentId: " + mCommentId);
+//            Log.d("bindComment", "commentId: " + mCommentId);
 
             String nameTag = comment.getString("nameTag");
 

@@ -22,12 +22,14 @@ import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
 import com.github.florent37.materialviewpager.sample.R;
 import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
+import com.github.florent37.materialviewpager.sample.RecentComparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -128,14 +130,16 @@ public class RecyclerViewFragment extends Fragment {
 
                             };
 
-//                            Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
+
+
+                            Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
 
 
                         } catch (org.json.JSONException e) {
                             Log.d("get_posts_req", e.getMessage());
                         }
 
-                        Collections.reverse(mPostObjects);
+                        Collections.sort(mPostObjects, new RecentComparator());
                         // add empty head for 'new post' card
                         mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
