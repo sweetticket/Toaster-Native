@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gc.materialdesign.views.Button;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.ocpsoft.pretty.time.PrettyTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +116,15 @@ public class PostDetailActivity extends AppCompatActivity {
                 mPostBody.setText(mPostObject.get("body").toString());
                 mPostNumVotes.setText(mPostObject.get("numLikes").toString());
 
+                try {
+                    Date createdAt = ISO8601DateParser.parse(mPostObject.getString("createdAt"));
+                    PrettyTime p = new PrettyTime();
+                    mPostDate.setText(p.format(createdAt));
+
+                } catch (java.text.ParseException e){
+                    Log.d("bindPost", "createdAt Error: " + e.getMessage());
+                }
+
             } catch (org.json.JSONException e) {
                 Log.d("PostDetail", "onCreate JSONException: " + e.getMessage());
             }
@@ -175,7 +186,6 @@ public class PostDetailActivity extends AppCompatActivity {
                                 }
                                 catch (JSONException e) {
                                     Log.d("get_comments_req", e.getMessage());
-
                                 }
 
                             };

@@ -12,9 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -94,7 +97,14 @@ public class PostItem extends RecyclerView.ViewHolder {
             mDownvoterIds = post.getString("downvoterIds");
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = post.getString("numLikes");
-//            String createdAt = post.getString("createdAt");
+            try {
+                Date createdAt = ISO8601DateParser.parse(post.getString("createdAt"));
+                PrettyTime p = new PrettyTime();
+                mPostDate.setText(p.format(createdAt));
+
+            } catch (java.text.ParseException e){
+                Log.d("bindPost", "createdAt Error: " + e.getMessage());
+            }
             mPostId = post.getString("_id");
 
             mPostBody.setText(body);
@@ -110,7 +120,6 @@ public class PostItem extends RecyclerView.ViewHolder {
             } else {
                 mDownvote.setImageResource(R.mipmap.downvote);
             }
-//            mPostDate.setText(createdAt);
 
             setNumComments(commentsCountMap);
 

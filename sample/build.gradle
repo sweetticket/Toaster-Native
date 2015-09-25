@@ -80,6 +80,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
         transitive = true;
     }
+    compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.6'
 
     compile project(':materialviewpager')
     compile project(':materialviewpagercontroller')

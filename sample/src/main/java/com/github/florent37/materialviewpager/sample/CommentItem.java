@@ -6,8 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -54,7 +57,6 @@ public class CommentItem extends RecyclerView.ViewHolder {
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
             String numLikes = comment.getString("numLikes");
 //            Log.d("bindComment", "numLikes:" + numLikes);
-//            String createdAt = post.getString("createdAt");
             mCommentId = comment.getString("_id");
 //            Log.d("bindComment", "commentId: " + mCommentId);
 
@@ -63,7 +65,15 @@ public class CommentItem extends RecyclerView.ViewHolder {
             mCommentBody.setText(body);
             mCommentNumVotes.setText(numLikes);
             mCommentNameTag.setText("by " + nameTag);
-//            mCommentDate.setText(createdAt);
+
+            try {
+                Date createdAt = ISO8601DateParser.parse(comment.getString("createdAt"));
+                PrettyTime p = new PrettyTime();
+                mCommentDate.setText(p.format(createdAt));
+
+            } catch (java.text.ParseException e){
+                Log.d("bindPost", "createdAt Error: " + e.getMessage());
+            }
 
             if (mUpvoterIds.contains(GlobalVariables.mUserId)) {
                 mUpvote.setImageResource(R.mipmap.upvote_active);
