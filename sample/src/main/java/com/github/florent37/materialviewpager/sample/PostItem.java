@@ -2,12 +2,8 @@ package com.github.florent37.materialviewpager.sample;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,12 +14,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.ocpsoft.pretty.time.PrettyTime;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +25,7 @@ import java.util.Map;
  */
 public class PostItem extends RecyclerView.ViewHolder {
 
+    private int mPosition;
     private TextView mPostBody;
     private TextView mPostDate;
     private TextView mPostNumComments;
@@ -46,6 +39,7 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     private boolean mHasUpvoted;
     private boolean mHasDownvoted;
+    private int numLikes;
 
     private JSONObject mPostObject;
 
@@ -74,46 +68,50 @@ public class PostItem extends RecyclerView.ViewHolder {
         mUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 2) + "");
+                    numLikes += 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
-                VotingRequests.sendPostUpvoteRequest(mPostId);
+                VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
         mPostNumVotes.setClickable(true);
         mPostNumVotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 2) + "");
+                    numLikes += 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
-                VotingRequests.sendPostUpvoteRequest(mPostId);
+                VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
 
@@ -121,25 +119,47 @@ public class PostItem extends RecyclerView.ViewHolder {
         mDownvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
                     mDownvote.setImageResource(R.mipmap.downvote_active);
-                    mPostNumVotes.setText((numLikes - 2) + "");
+                    numLikes -= 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                     mHasDownvoted = true;
                 } else if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                 } else {
                     mDownvote.setImageResource(R.mipmap.downvote_active);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = true;
                 }
-                VotingRequests.sendPostDownvoteRequest(mPostId);
+                VotingHelpers.sendPostDownvoteRequest(mPostId);
             }
         });
+
+    }
+
+    public void updatePost(boolean hasUpvoted, boolean hasDownvoted, int newNumLikes, int numComments) {
+        mPostNumVotes.setText(newNumLikes + "");
+        setNumComments(numComments);
+        mHasUpvoted = hasUpvoted;
+        mHasDownvoted = hasDownvoted;
+        if (mHasUpvoted) {
+            mUpvote.setImageResource(R.mipmap.upvote_active);
+        } else {
+            mUpvote.setImageResource(R.mipmap.upvote);
+        }
+        if (mHasDownvoted) {
+            mDownvote.setImageResource(R.mipmap.downvote_active);
+        } else {
+            mDownvote.setImageResource(R.mipmap.downvote);
+        }
+
+        numLikes = newNumLikes;
 
     }
 
@@ -155,7 +175,7 @@ public class PostItem extends RecyclerView.ViewHolder {
             String downvoterIds = post.getString("downvoterIds");
             mHasDownvoted = downvoterIds.contains(GlobalVariables.mUserId);
 //            Log.d("onBind", "downvoterIds:" + downvoterIds);
-            String numLikes = post.getString("numLikes");
+            numLikes = post.getInt("numLikes");
             try {
                 Date createdAt = ISO8601DateParser.parse(post.getString("createdAt"));
                 PrettyTime p = new PrettyTime();
@@ -167,7 +187,7 @@ public class PostItem extends RecyclerView.ViewHolder {
             mPostId = post.getString("_id");
 
             mPostBody.setText(body);
-            mPostNumVotes.setText(numLikes);
+            mPostNumVotes.setText(numLikes + "");
 
             if (mHasUpvoted) {
                 mUpvote.setImageResource(R.mipmap.upvote_active);
@@ -189,6 +209,14 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     }
 
+    public void setNumComments(int numComments) {
+        if (numComments == 1) {
+            mPostNumComments.setText("1 Comment");
+        } else {
+            mPostNumComments.setText(numComments + " Comments");
+        }
+    }
+
     public void setNumComments(Map<String, Integer> commentsCountMap) {
 
         if (commentsCountMap.containsKey(mPostId)) {
@@ -206,6 +234,8 @@ public class PostItem extends RecyclerView.ViewHolder {
     }
 
     private void toPostDetail() {
+
+        MainActivity.getInstance().setClickedPost(this);
         // Tag used to cancel the request
         String tag_json_obj = "get_post_detail";
 
@@ -224,8 +254,9 @@ public class PostItem extends RecyclerView.ViewHolder {
                             JSONObject postDetailObj = response.getJSONArray("posts").getJSONObject(0);
                             Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
                             toDetailIntent.putExtra("postObject", postDetailObj.toString());
+                            toDetailIntent.putExtra("fragmentPosition", 0);
                             MainActivity.getInstance().startActivity(toDetailIntent);
-                            MainActivity.getInstance().finish();
+//                            MainActivity.getInstance().finish();
                         } catch (org.json.JSONException e) {
                             Log.d("get_post_detail", e.getMessage());
                         }

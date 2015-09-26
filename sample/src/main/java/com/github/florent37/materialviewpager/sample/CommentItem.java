@@ -11,7 +11,6 @@ import com.ocpsoft.pretty.time.PrettyTime;
 import org.json.JSONObject;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Created by jennykim on 9/20/15.
@@ -104,7 +103,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
                         mCommentNumVotes.setText((numLikes + 1) + "");
                         mHasUpvoted = true;
                     }
-                    VotingRequests.sendCommentUpvoteRequest(mCommentId);
+                    VotingHelpers.sendCommentUpvoteRequest(mCommentId);
                 }
             });
             mCommentNumVotes.setClickable(true);
@@ -127,7 +126,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
                         mCommentNumVotes.setText((numLikes + 1) + "");
                         mHasUpvoted = true;
                     }
-                    VotingRequests.sendCommentUpvoteRequest(mCommentId);
+                    VotingHelpers.sendCommentUpvoteRequest(mCommentId);
                 }
             });
 
@@ -151,7 +150,7 @@ public class CommentItem extends RecyclerView.ViewHolder {
                         mCommentNumVotes.setText((numLikes - 1) + "");
                         mHasDownvoted = true;
                     }
-                    VotingRequests.sendCommentDownvoteRequest(mCommentId);
+                    VotingHelpers.sendCommentDownvoteRequest(mCommentId);
                 }
             });
 

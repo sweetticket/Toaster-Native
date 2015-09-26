@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewFragment mRecentFragment;
     private RecyclerViewFragment mTrendingFragment;
     private TextView mBadge;
+    private PostItem mClickedPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +182,29 @@ public class MainActivity extends AppCompatActivity {
 
     public static synchronized MainActivity getInstance() {
         return mInstance;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mClickedPost != null) {
+            boolean hasUpvoted = getIntent().getBooleanExtra("hasUpvoted", true);
+            boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
+            int numLikes = getIntent().getIntExtra("numLikes", 0);
+            int numComments = getIntent().getIntExtra("numComments", 0);
+            mClickedPost.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
+            mClickedPost = null;
+        }
+    }
+
+    public void setClickedPost(PostItem postitem) {
+        mClickedPost = postitem;
     }
 
     public RecyclerViewFragment getFragment(int position) {

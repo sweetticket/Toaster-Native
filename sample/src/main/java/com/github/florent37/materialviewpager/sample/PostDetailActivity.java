@@ -43,7 +43,6 @@ import java.util.Map;
 public class PostDetailActivity extends AppCompatActivity {
 
     private static PostDetailActivity mInstance;
-    Button mCommentBtn;
     EditText mCommentEditText;
     RecyclerView mRecyclerView;
     private CommentsRecyclerViewAdapter mAdapter;
@@ -61,6 +60,8 @@ public class PostDetailActivity extends AppCompatActivity {
     Toolbar mToolbar;
     private boolean mHasUpvoted;
     private boolean mHasDownvoted;
+    private int numLikes;
+    private int numComments;
 
 
     public static synchronized PostDetailActivity getInstance() {
@@ -121,6 +122,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 mHasUpvoted = upvoterIds.contains(GlobalVariables.mUserId);
                 String downvoterIds = mPostObject.getString("downvoterIds");
                 mHasDownvoted = downvoterIds.contains(GlobalVariables.mUserId);
+                numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
 
                 if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote_active);
@@ -151,46 +153,50 @@ public class PostDetailActivity extends AppCompatActivity {
         mUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 2) + "");
+                    numLikes += 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
-                VotingRequests.sendPostUpvoteRequest(mPostId);
+                VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
         mPostNumVotes.setClickable(true);
         mPostNumVotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 2) + "");
+                    numLikes += 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
                     mUpvote.setImageResource(R.mipmap.upvote_active);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
-                VotingRequests.sendPostUpvoteRequest(mPostId);
+                VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
 
@@ -198,23 +204,25 @@ public class PostDetailActivity extends AppCompatActivity {
         mDownvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer numLikes = Integer.parseInt(mPostNumVotes.getText().toString());
                 if (mHasUpvoted) {
                     mUpvote.setImageResource(R.mipmap.upvote);
                     mDownvote.setImageResource(R.mipmap.downvote_active);
-                    mPostNumVotes.setText((numLikes - 2) + "");
+                    numLikes -= 2;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                     mHasDownvoted = true;
                 } else if (mHasDownvoted) {
                     mDownvote.setImageResource(R.mipmap.downvote);
-                    mPostNumVotes.setText((numLikes + 1) + "");
+                    numLikes += 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                 } else {
                     mDownvote.setImageResource(R.mipmap.downvote_active);
-                    mPostNumVotes.setText((numLikes - 1) + "");
+                    numLikes -= 1;
+                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = true;
                 }
-                VotingRequests.sendPostDownvoteRequest(mPostId);
+                VotingHelpers.sendPostDownvoteRequest(mPostId);
             }
         });
 
@@ -234,8 +242,13 @@ public class PostDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent toMainIntent = new Intent(MainActivity.getInstance(), MainActivity.class);
-        MainActivity.getInstance().startActivity(toMainIntent);
+        Intent toMainIntent = new Intent(this, MainActivity.class);
+        toMainIntent.putExtra("hasUpvoted", mHasUpvoted);
+        toMainIntent.putExtra("hasDownvoted", mHasDownvoted);
+        toMainIntent.putExtra("numLikes", numLikes);
+        toMainIntent.putExtra("numComments", numComments);
+        toMainIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(toMainIntent);
         finish();
     }
 
@@ -328,6 +341,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
         if (commentBody != "") {
 
+            numComments += 1;
+
             Map<String, String> params = new HashMap<String, String>();
             params.put("commentBody", commentBody);
             params.put("postId", mPostId);
@@ -374,6 +389,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     public void setNumComments(int count) {
+        numComments = count;
         if (count == 1) {
             mPostNumComments.setText("1 Comment");
         } else {

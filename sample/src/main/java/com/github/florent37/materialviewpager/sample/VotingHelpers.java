@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by jennykim on 9/25/15.
  */
-public class VotingRequests {
+public class VotingHelpers {
 
     public static void sendPostUpvoteRequest(String postId) {
         // Tag used to cancel the request
@@ -174,4 +174,5 @@ public class VotingRequests {
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
+
 }
