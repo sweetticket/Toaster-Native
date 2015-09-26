@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,12 +16,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.sample.AppController;
+import com.github.florent37.materialviewpager.sample.ByDateComparator;
+import com.github.florent37.materialviewpager.sample.CommentsComparator;
 import com.github.florent37.materialviewpager.sample.CustomMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
 import com.github.florent37.materialviewpager.sample.R;
 import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
-import com.github.florent37.materialviewpager.sample.RecentComparator;
 import com.github.florent37.materialviewpager.sample.TrendingComparator;
 
 import org.json.JSONArray;
@@ -30,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -141,7 +140,7 @@ public class RecyclerViewFragment extends Fragment {
                         }
 
                         if (mPosition == 0) {
-                            Collections.sort(mPostObjects, new RecentComparator());
+                            Collections.sort(mPostObjects, new ByDateComparator());
                         } else {
                             Collections.sort(mPostObjects, new TrendingComparator());
                         }

@@ -1,6 +1,5 @@
 package com.github.florent37.materialviewpager.sample;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,18 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gc.materialdesign.views.Button;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.ocpsoft.pretty.time.PrettyTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +25,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +36,9 @@ public class NotificationsActivity extends AppCompatActivity {
 
     private static NotificationsActivity mInstance;
     RecyclerView mRecyclerView;
-    private CommentsRecyclerViewAdapter mAdapter;
+    private NotiRecyclerViewAdapter mAdapter;
     private List<Object> mNotiObjects = new ArrayList<Object>();
+    private Toolbar mToolbar;
 
     public static synchronized NotificationsActivity getInstance() {
         return mInstance;
@@ -57,6 +50,16 @@ public class NotificationsActivity extends AppCompatActivity {
         setContentView(R.layout.notifications);
         mInstance = this;
 
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        mToolbar.setTitle("NOTIFICATIONS");
+        mToolbar.setNavigationIcon(R.mipmap.back);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = this.getWindow();
             // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -73,10 +76,10 @@ public class NotificationsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new CommentsRecyclerViewAdapter(mNotiObjects);
+        mAdapter = new NotiRecyclerViewAdapter(mNotiObjects);
         mRecyclerView.setAdapter(mAdapter);
         populateNoti();
-        Log.d("PostDetail", "mCommentObjects = " + mNotiObjects.toString());
+        Log.d("Notifications", "mCommentObjects = " + mNotiObjects.toString());
 
         MaterialViewPagerHelper.registerRecyclerView(this, mRecyclerView, null);
 
@@ -84,12 +87,10 @@ public class NotificationsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent toMainIntent = new Intent(MainActivity.getInstance(), MainActivity.class);
-        MainActivity.getInstance().startActivity(toMainIntent);
-        finish();
+        sendReadNotiRequest();
     }
 
-    private void populateComments() {
+    private void populateNoti() {
 
         mNotiObjects.clear();
 
@@ -138,7 +139,7 @@ public class NotificationsActivity extends AppCompatActivity {
                             Log.d("get_noti_req", e.getMessage());
                         }
 
-                        Collections.sort(mNotiObjects, new NotiComparator());
+                        Collections.sort(mNotiObjects, new CommentsComparator());
                         mAdapter.updateContents(mNotiObjects);
                         mAdapter.notifyDataSetChanged();
 
@@ -148,7 +149,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("get_comments_req", "Error: " + error.getMessage());
+                Log.d("get_noti_req", "Error: " + error.getMessage());
             }
         }) {
 
@@ -162,7 +163,45 @@ public class NotificationsActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+    }
 
+    private void sendReadNotiRequest() {
+        // Tag used to cancel the request
+        String tag_json_obj = "read_noti_req";
+
+        String url = GlobalVariables.ROOT_URL + "/api/notifications/readall";
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        Log.d("read_noti_req", "starting sendReadNotiRequest");
+
+        CustomRequest jsonObjReq = new CustomRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Intent toMainIntent = new Intent(MainActivity.getInstance(), MainActivity.class);
+                        MainActivity.getInstance().startActivity(toMainIntent);
+                        finish();
+                    }
+                }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("read_noti_req", "Error: " + error.getMessage());
+                }
+            }) {
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                    return headers;
+                }
+            };
+
+// Adding request to request queue
+            AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
 }

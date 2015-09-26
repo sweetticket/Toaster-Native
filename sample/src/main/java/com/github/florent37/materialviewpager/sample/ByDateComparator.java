@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecentComparator implements Comparator<Object>
+public class ByDateComparator implements Comparator<Object>
 {
 
     @Override
@@ -17,15 +17,15 @@ public class RecentComparator implements Comparator<Object>
         try {
             Date date1 = ISO8601DateParser.parse(((JSONObject) obj1).getString("createdAt"));
             Date date2 = ISO8601DateParser.parse(((JSONObject) obj2).getString("createdAt"));
-//            Log.d("RecentComparator", "date1: " + date1);
-//            Log.d("RecentComparator", "date2: " + date2);
+//            Log.d("ByDateComparator", "date1: " + date1);
+//            Log.d("ByDateComparator", "date2: " + date2);
             return date2.compareTo(date1);
         } catch (org.json.JSONException e) {
-            Log.d("RecentComparator", e.getMessage());
+            Log.d("ByDateComparator", e.getMessage());
         } catch (java.text.ParseException e) {
-            Log.d("RecentComparator", e.getMessage());
+            Log.d("ByDateComparator", e.getMessage());
         } catch (java.lang.ClassCastException e) {
-            Log.d("RecentComparator", e.getMessage());
+            Log.d("ByDateComparator", e.getMessage());
         }
         return 0;
     }

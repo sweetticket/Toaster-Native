@@ -33,7 +33,8 @@
         <activity android:name=".MainActivity"
             android:background="@drawable/bg"
             android:launchMode="singleTask"></activity>
-
+        <activity android:name=".NotificationsActivity"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".SignInActivity"
             android:background="@drawable/bg"
             android:launchMode="singleTask"

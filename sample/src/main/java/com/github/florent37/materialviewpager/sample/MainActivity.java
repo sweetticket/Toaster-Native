@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.github.florent37.materialviewpager.sample.fragment.RecyclerViewFragment;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -40,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerViewFragment mRecentFragment;
     private RecyclerViewFragment mTrendingFragment;
+    private TextView mBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+        sendGetNumUnreadRequest();
+
 
     }
 
@@ -175,6 +189,27 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return mTrendingFragment;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        View noticeActionView = menu.findItem(R.id.notice).getActionView();
+        mBadge = (TextView) noticeActionView.findViewById(R.id.actionbar_notifcation_textview);
+        noticeActionView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.getInstance(), NotificationsActivity.class);
+                MainActivity.getInstance().startActivity(intent);
+                MainActivity.getInstance().finish();
+            }
+        });
+
+        return true;
     }
 
     @Override
@@ -216,11 +251,63 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.closeDrawer(mDrawerList);
     }
 
+    public void setBadgeCount(String numUnread) {
+        if (numUnread == "0") {
+            mBadge.setVisibility(View.GONE);
+        } else {
+            mBadge.setVisibility(View.VISIBLE);
+            mBadge.setText(numUnread);
+        }
+    }
+
     public void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void sendGetNumUnreadRequest() {
+        // Tag used to cancel the request
+        String tag_json_obj = "get_num_unread_req";
+
+        String url = GlobalVariables.ROOT_URL + "/api/notifications/getnumunread";
+
+        Map<String, String> params = new HashMap<String, String>();
+
+
+        CustomRequest jsonObjReq = new CustomRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("get_num_unread_req", response.toString());
+                        try {
+                            String numUnread = response.getString("numUnread");
+                            setBadgeCount(numUnread);
+                        } catch (org.json.JSONException e) {
+                            Log.d("get_num_unread_req", "onResponse Error: " + e.getMessage());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("get_num_unread_req", "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + GlobalVariables.mToken);
+                return headers;
+            }
+        };
+
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+
     }
 }

@@ -57,16 +57,15 @@ public class NotificationItem extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindPost(JSONObject noti, Map<String, Integer> commentsCountMap) {
+    public void bindNoti(JSONObject noti) {
 
         try {
             mNotiObject = noti;
             mPostId = noti.getString("postId");
             String body = noti.getString("body");
-            String upvoterIds = noti.getString("upvoterIds");
-            String count = noti.getString("countUnread");
+            int count = noti.getInt("countUnread");
             String type = noti.getString("type");
-            String isRead = noti.getString("isRead");
+            boolean isRead = noti.getBoolean("isRead");
             try {
                 Date createdAt = ISO8601DateParser.parse(noti.getString("createdAt"));
                 PrettyTime p = new PrettyTime();
@@ -77,7 +76,7 @@ public class NotificationItem extends RecyclerView.ViewHolder {
             }
             mNotiId = noti.getString("_id");
             mNotiBody.setText(body);
-            mNotiCount.setText(count);
+            mNotiCount.setText(count + "");
 
             if (type == "upvote") {
                 mNotiIcon.setImageResource(R.mipmap.thumbsup);
@@ -87,10 +86,10 @@ public class NotificationItem extends RecyclerView.ViewHolder {
                 mNotiIcon.setImageResource(R.mipmap.chatbubble);
             }
 
-            if (isRead == "false") {
-                mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.Highlight));
-            } else {
+            if (isRead) {
                 mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.White));
+            } else {
+                mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.Highlight));
             }
 
         } catch (JSONException e) {
