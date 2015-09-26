@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewFragment mRecentFragment;
     private RecyclerViewFragment mTrendingFragment;
     private TextView mBadge;
-    private PostItem mClickedPost;
+//    private PostItem mClickedPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.getViewPager().setOffscreenPageLimit(mViewPager.getViewPager().getAdapter().getCount());
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
 
+
         View logo = findViewById(R.id.logo_white);
         if (logo != null)
             logo.setOnClickListener(new View.OnClickListener() {
@@ -193,19 +194,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (mClickedPost != null) {
+
+        if (getIntent().hasExtra("postId")){
+            String postId = getIntent().getStringExtra("postId");
             boolean hasUpvoted = getIntent().getBooleanExtra("hasUpvoted", true);
             boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
             int numLikes = getIntent().getIntExtra("numLikes", 0);
             int numComments = getIntent().getIntExtra("numComments", 0);
-            mClickedPost.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
-            mClickedPost = null;
+            PostItem recentPostItem = getFragment(0).getAdapter().getOriginalAdapter().getPostItem(postId);
+            PostItem trendingPostItem = getFragment(1).getAdapter().getOriginalAdapter().getPostItem(postId);
+            if (recentPostItem != null) {
+                recentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
+            }
+            if (trendingPostItem != null) {
+                trendingPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
+            }
         }
+
+//        if (mClickedPost != null) {
+//            boolean hasUpvoted = getIntent().getBooleanExtra("hasUpvoted", true);
+//            boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
+//            int numLikes = getIntent().getIntExtra("numLikes", 0);
+//            int numComments = getIntent().getIntExtra("numComments", 0);
+//            mClickedPost.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
+//            mClickedPost = null;
+//            getFragment(0).getAdapter().getItem()
+//        }
     }
 
-    public void setClickedPost(PostItem postitem) {
-        mClickedPost = postitem;
-    }
+//    public void setClickedPost(PostItem postitem) {
+//        mClickedPost = postitem;
+//    }
 
     public RecyclerViewFragment getFragment(int position) {
         if (position == 0) {

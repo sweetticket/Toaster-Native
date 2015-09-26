@@ -235,7 +235,7 @@ public class PostItem extends RecyclerView.ViewHolder {
 
     private void toPostDetail() {
 
-        MainActivity.getInstance().setClickedPost(this);
+//        MainActivity.getInstance().setClickedPost(this);
         // Tag used to cancel the request
         String tag_json_obj = "get_post_detail";
 
@@ -254,7 +254,6 @@ public class PostItem extends RecyclerView.ViewHolder {
                             JSONObject postDetailObj = response.getJSONArray("posts").getJSONObject(0);
                             Intent toDetailIntent = new Intent(MainActivity.getInstance(), PostDetailActivity.class);
                             toDetailIntent.putExtra("postObject", postDetailObj.toString());
-                            toDetailIntent.putExtra("fragmentPosition", 0);
                             MainActivity.getInstance().startActivity(toDetailIntent);
 //                            MainActivity.getInstance().finish();
                         } catch (org.json.JSONException e) {

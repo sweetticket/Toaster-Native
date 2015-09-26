@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     List<Object> contents;
     private Map<String, Integer> mCommentsCountMap;
+    private Map<String, PostItem> mPostItemMap;
 
     static final int TYPE_HEADER = 0;
     static final int TYPE_CELL = 1;
@@ -25,6 +27,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public PostsRecyclerViewAdapter(List<Object> contents, Map<String, Integer> commentsCountMap) {
         this.contents = contents;
         this.mCommentsCountMap = commentsCountMap;
+        this.mPostItemMap = new HashMap<String, PostItem>();
 
 //        Log.d("contents", "contents: " + contents.toString());
 //        Log.d("mCommentsCountMap", "mCommentsCountMap: " + mCommentsCountMap.toString());
@@ -83,10 +86,22 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 try {
 //                    Log.d("onBindViewHolder", "contents: " +  contents.toString());
                     ((PostItem) holder).bindPost((JSONObject) contents.get(position), mCommentsCountMap);
+                    try {
+                        String postId = ((JSONObject) contents.get(position)).getString("_id");
+                        mPostItemMap.put(postId, (PostItem) holder);
+                        Log.d("onBindViewHolder", "mPostItemMap: " + mPostItemMap.toString());
+                    } catch (org.json.JSONException e) {
+                        Log.d("onBindViewHolder", "Error getting postId: " + e.getMessage());
+                    }
                 } catch (java.lang.ClassCastException e) {
                     Log.d("onBindViewHolder", e.getMessage());
                 }
                 break;
         }
+    }
+
+    public PostItem getPostItem(String postId) {
+        Log.d("getPostItem", "mPostItemMap: " + mPostItemMap.toString());
+        return mPostItemMap.get(postId);
     }
 }

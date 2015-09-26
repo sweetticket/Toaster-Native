@@ -97,6 +97,10 @@ public class RecyclerViewFragment extends Fragment {
 
     }
 
+    public CustomMaterialAdapter getAdapter() {
+        return mAdapter;
+    }
+
     private void sendGetPostsRequest(String url) {
 
         // Tag used to cancel the request

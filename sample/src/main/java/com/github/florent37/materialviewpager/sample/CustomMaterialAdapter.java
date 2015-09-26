@@ -34,6 +34,10 @@ public class CustomMaterialAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         registerAdapterObserver();
     }
 
+    public PostsRecyclerViewAdapter getOriginalAdapter() {
+        return mAdapter;
+    }
+
     /**
      * Construct the RecyclerViewMaterialAdapter, which inject a header into an actual RecyclerView.Adapter
      *
