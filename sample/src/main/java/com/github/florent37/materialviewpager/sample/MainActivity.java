@@ -222,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
+    public MaterialViewPager getViewPager() {
+        return mViewPager;
+    }
+
 //    public void setClickedPost(PostItem postitem) {
 //        mClickedPost = postitem;
 //    }

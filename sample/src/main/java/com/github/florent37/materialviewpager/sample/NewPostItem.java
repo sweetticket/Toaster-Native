@@ -76,6 +76,11 @@ public class NewPostItem extends RecyclerView.ViewHolder {
 
         if (postbody != "") {
 
+            mNewPost.setText("");
+            mCharCount.setText("140");
+            MainActivity.getInstance().closeKeyboard();
+            MainActivity.getInstance().getViewPager().getViewPager().setCurrentItem(0);
+
             Map<String, String> params = new HashMap<String, String>();
             params.put("postBody", postbody);
 
@@ -86,11 +91,8 @@ public class NewPostItem extends RecyclerView.ViewHolder {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("new_post_req", response.toString());
-                            mNewPost.setText("");
-                            mCharCount.setText("140");
                             MainActivity.getInstance().getFragment(0).populatePosts();
                             MainActivity.getInstance().getFragment(1).populatePosts();
-                            MainActivity.getInstance().closeKeyboard();
                         }
                     }, new Response.ErrorListener() {
 
