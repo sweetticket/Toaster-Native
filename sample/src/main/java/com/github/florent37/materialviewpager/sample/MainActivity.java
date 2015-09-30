@@ -52,7 +52,21 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewFragment mRecentFragment;
     private RecyclerViewFragment mTrendingFragment;
     private TextView mBadge;
-//    private PostItem mClickedPost;
+
+    static boolean active = false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.getInstance(), NotificationsActivity.class);
                 MainActivity.getInstance().startActivity(intent);
-                MainActivity.getInstance().finish();
+//                MainActivity.getInstance().finish();
             }
         });
 

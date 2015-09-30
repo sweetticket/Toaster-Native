@@ -32,8 +32,6 @@ public class PostItem extends RecyclerView.ViewHolder {
     private TextView mPostNumVotes;
     private ImageView mUpvote;
     private ImageView mDownvote;
-    private LinearLayout mToPostDetailClickable;
-
     private String mPostAuthorId;
     private String mPostId;
 
@@ -52,7 +50,6 @@ public class PostItem extends RecyclerView.ViewHolder {
         mPostNumVotes = (TextView) view.findViewById(R.id.num_votes);
         mUpvote = (ImageView) view.findViewById(R.id.upvote);
         mDownvote = (ImageView) view.findViewById(R.id.downvote);
-        mToPostDetailClickable = (LinearLayout) view.findViewById(R.id.to_post_detail);
 
         View.OnClickListener toPostDetailListener = new View.OnClickListener() {
             @Override
@@ -69,21 +66,14 @@ public class PostItem extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (mHasDownvoted) {
-//                    mDownvote.setImageResource(R.mipmap.downvote);
-//                    mUpvote.setImageResource(R.mipmap.upvote_active);
                     numLikes += 2;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
-//                    mUpvote.setImageResource(R.mipmap.upvote);
                     numLikes -= 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
-//                    mUpvote.setImageResource(R.mipmap.upvote_active);
                     numLikes += 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
@@ -95,21 +85,15 @@ public class PostItem extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (mHasDownvoted) {
-//                    mDownvote.setImageResource(R.mipmap.downvote);
-//                    mUpvote.setImageResource(R.mipmap.upvote_active);
+
                     numLikes += 2;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                     mHasUpvoted = true;
                 } else if (mHasUpvoted) {
-//                    mUpvote.setImageResource(R.mipmap.upvote);
                     numLikes -= 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                 } else {
-//                    mUpvote.setImageResource(R.mipmap.upvote_active);
                     numLikes += 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
@@ -122,21 +106,14 @@ public class PostItem extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (mHasUpvoted) {
-//                    mUpvote.setImageResource(R.mipmap.upvote);
-//                    mDownvote.setImageResource(R.mipmap.downvote_active);
                     numLikes -= 2;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasUpvoted = false;
                     mHasDownvoted = true;
                 } else if (mHasDownvoted) {
-//                    mDownvote.setImageResource(R.mipmap.downvote);
                     numLikes += 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = false;
                 } else {
-//                    mDownvote.setImageResource(R.mipmap.downvote_active);
                     numLikes -= 1;
-//                    mPostNumVotes.setText(numLikes + "");
                     mHasDownvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
