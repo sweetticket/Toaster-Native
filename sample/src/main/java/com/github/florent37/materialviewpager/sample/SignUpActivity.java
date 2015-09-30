@@ -78,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
         TextView appTitle = (TextView) findViewById(R.id.app_title);
 
         Typeface face = Typeface.createFromAsset(getAssets(),
-                "fonts/oduda.ttf");
+                "fonts/MAXWELLBOLD.ttf");
         appTitle.setTypeface(face);
 
         signUpButton = (Button) findViewById(R.id.signup_btn);

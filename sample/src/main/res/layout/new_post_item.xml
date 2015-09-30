@@ -56,7 +56,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="3dp"
             android:background="@color/ColorPrimary"
-            android:text="TOAST!"
+            android:text="POST"
             android:layout_marginLeft="20dp" />
 
 

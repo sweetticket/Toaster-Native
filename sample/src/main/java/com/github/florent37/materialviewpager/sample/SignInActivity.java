@@ -63,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         TextView appTitle = (TextView) findViewById(R.id.app_title);
 
         Typeface face = Typeface.createFromAsset(getAssets(),
-                "fonts/oduda.ttf");
+                "fonts/MAXWELLBOLD.ttf");
         appTitle.setTypeface(face);
 
         signInButton = (Button) findViewById(R.id.signin_btn);

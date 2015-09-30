@@ -185,6 +185,17 @@ public class MainActivity extends AppCompatActivity {
         return mInstance;
     }
 
+    public void updateVotes(String postId, boolean hasUpvoted, boolean hasDownvoted, int numLikes) {
+        PostItem recentPostItem = getFragment(0).getAdapter().getOriginalAdapter().getPostItem(postId);
+        PostItem trendingPostItem = getFragment(1).getAdapter().getOriginalAdapter().getPostItem(postId);
+        if (recentPostItem != null) {
+            recentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
+        }
+        if (trendingPostItem != null) {
+            trendingPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
+        }
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

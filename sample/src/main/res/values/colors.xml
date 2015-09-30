@@ -4,14 +4,14 @@
     <color name="blue">#303F9F</color>
     <color name="Black">#000000</color>
 
-    <color name="ColorPrimary">#ff464f</color>
-    <color name="ColorPrimaryDark">#c31c13</color>
-    <color name="ColorSecondary">#fa8e83</color>
-    <color name="tabsScrollColor">#8a140e</color>
+    <color name="ColorPrimary">#ffb11e</color>
+    <color name="ColorPrimaryDark">#ff9800</color>
+    <color name="ColorSecondary">#ffcf3e</color>
+    <color name="tabsScrollColor">#c47402</color>
     <color name="ColorLightGray">#EEE</color>
     <color name="White">#FFFFFF</color>
     <color name="DarkGray">#222</color>
-    <color name="Highlight">#FFD8D8</color>
+    <color name="Highlight">#fff3c5</color>
 
     <color name="accent_color">@color/ColorPrimary</color>
     <color name="colorPrimary">@color/ColorPrimary</color>

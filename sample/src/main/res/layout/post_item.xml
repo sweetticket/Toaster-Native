@@ -115,7 +115,7 @@
                     android:text="8"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:textColor="@color/ColorPrimary"
+                    android:textColor="@color/ColorPrimaryDark"
                     android:textSize="18dp"/>
 
                 <ImageView
