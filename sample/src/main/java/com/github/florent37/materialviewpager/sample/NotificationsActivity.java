@@ -104,7 +104,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
         Map<String, String> params = new HashMap<String, String>();
 
-        String url = GlobalVariables.ROOT_URL + "/publications/notifications";
+        String url = GlobalVariables.ROOT_URL + "/api/notifications/50/0";
 
         Log.d("get_noti_req", "url = " + url);
 
