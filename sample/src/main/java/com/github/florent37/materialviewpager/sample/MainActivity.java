@@ -163,11 +163,11 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         return HeaderDesign.fromColorResAndUrl(
                                 R.color.ColorPrimary,
-                                "https://fs01.androidpit.info/a/63/0e/android-l-wallpapers-630ea6-h900.jpg");
+                                GlobalVariables.ROOT_URL + "/yolk_header.png");
                     case 1:
                         return HeaderDesign.fromColorResAndUrl(
                                 R.color.ColorSecondary,
-                                "http://cdn1.tnwcdn.com/wp-content/blogs.dir/1/files/2014/06/wallpaper_51.jpg");
+                                GlobalVariables.ROOT_URL + "/yolk_header.png");
                 }
 
                 //execute others actions if needed (ex : modify your header logo)
