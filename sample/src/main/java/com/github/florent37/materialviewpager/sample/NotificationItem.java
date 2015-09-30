@@ -1,6 +1,7 @@
 package com.github.florent37.materialviewpager.sample;
 
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -47,13 +48,17 @@ public class NotificationItem extends RecyclerView.ViewHolder {
         mNotiCount = (TextView) view.findViewById(R.id.noti_count);
         mNotiIcon = (ImageView) view.findViewById(R.id.noti_icon);
         mCardContent = (LinearLayout) view.findViewById(R.id.card_content);
+        CardView noti_card = (CardView) view.findViewById((R.id.card_view));
         View.OnClickListener toPostDetailListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.White));
+                mNotiCount.setVisibility(View.GONE);
                 toPostDetail();
             }
         };
-        view.setOnClickListener(toPostDetailListener);
+        noti_card.setClickable(true);
+        noti_card.setOnClickListener(toPostDetailListener);
 
     }
 
@@ -88,6 +93,7 @@ public class NotificationItem extends RecyclerView.ViewHolder {
 
             if (isRead) {
                 mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.White));
+                mNotiCount.setVisibility(View.GONE);
             } else {
                 mCardContent.setBackgroundColor(NotificationsActivity.getInstance().getResources().getColor(R.color.Highlight));
             }
