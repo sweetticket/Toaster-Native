@@ -310,8 +310,10 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 //TODO: intent for profile activity
                 break;
+            case 1:
+                break;
             case 2:
-                //TODO: logout, go to signup page
+                logout();
                 break;
             default:
                 break;
@@ -380,6 +382,16 @@ public class MainActivity extends AppCompatActivity {
 
 // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+    }
 
+    private void logout() {
+        GlobalVariables.mToken = null;
+        GlobalVariables.mUserId = null;
+        GlobalVariables.mTokenExp = null;
+        SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
+        prefs.edit().clear().commit();
+        Intent toSignupIntent = new Intent(this, SignUpActivity.class);
+        finish();
+        startActivity(toSignupIntent);
     }
 }

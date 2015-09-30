@@ -180,6 +180,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.d("read_noti_req", "response: " + response.toString());
                         Intent toMainIntent = new Intent(MainActivity.getInstance(), MainActivity.class);
                         MainActivity.getInstance().startActivity(toMainIntent);
                         finish();

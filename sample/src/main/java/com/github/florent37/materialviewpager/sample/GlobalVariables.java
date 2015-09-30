@@ -11,4 +11,5 @@ public class GlobalVariables {
     public static final String ROOT_URL = "http://192.168.0.106:3000";
     // Redrover
 //    public static final String ROOT_URL ="http://10.145.14.158:3000";
+
 }
