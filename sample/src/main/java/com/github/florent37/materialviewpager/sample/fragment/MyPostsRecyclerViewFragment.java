@@ -3,6 +3,7 @@ package com.github.florent37.materialviewpager.sample.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,8 @@ import com.github.florent37.materialviewpager.sample.ByDateComparator;
 import com.github.florent37.materialviewpager.sample.CustomMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
+import com.github.florent37.materialviewpager.sample.MainActivity;
+import com.github.florent37.materialviewpager.sample.MyPostsRecyclerAdapter;
 import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
 import com.github.florent37.materialviewpager.sample.R;
 import com.github.florent37.materialviewpager.sample.TrendingComparator;
@@ -37,16 +40,16 @@ import java.util.Map;
 /**
  * Created by florentchampigny on 24/04/15.
  */
-public class ProfileRecyclerViewFragment extends Fragment {
+public class MyPostsRecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private CustomMaterialAdapter mAdapter;
+    private MyPostsRecyclerAdapter mAdapter;
     private List<Object> mPostObjects = new ArrayList<Object>();
     private Map<String, Integer> mCommentsCountMap = new HashMap<String, Integer>();
     private int mPosition;
 
-    public static ProfileRecyclerViewFragment newInstance() {
-        return new ProfileRecyclerViewFragment();
+    public static MyPostsRecyclerViewFragment newInstance() {
+        return new MyPostsRecyclerViewFragment();
     }
 
     public void setPosition(int position) {
@@ -60,13 +63,13 @@ public class ProfileRecyclerViewFragment extends Fragment {
         String url;
 
         if (mPosition == 0) {
-            // my posts
-            url = GlobalVariables.ROOT_URL + "/publications/userPostsComments";
+            // recent
+            url = GlobalVariables.ROOT_URL + "/api/postsIWrote/100/0";
 
 
         } else {
-            // my comments
-            url = GlobalVariables.ROOT_URL + "/publications/userPostsComments";
+            // trending
+            url = GlobalVariables.ROOT_URL + "/api/postsICommentedOn/100/0";
         }
 
         sendGetPostsRequest(url);
@@ -86,7 +89,7 @@ public class ProfileRecyclerViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new CustomMaterialAdapter(new PostsRecyclerViewAdapter(mPostObjects, mCommentsCountMap));
+        mAdapter = new MyPostsRecyclerAdapter(mPostObjects, mCommentsCountMap);
         mRecyclerView.setAdapter(mAdapter);
         populatePosts();
         mAdapter.updateContents(mPostObjects, mCommentsCountMap);
@@ -94,6 +97,10 @@ public class ProfileRecyclerViewFragment extends Fragment {
 
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
 
+    }
+
+    public MyPostsRecyclerAdapter getAdapter() {
+        return mAdapter;
     }
 
     private void sendGetPostsRequest(String url) {
@@ -134,15 +141,12 @@ public class ProfileRecyclerViewFragment extends Fragment {
                             Log.d("get_posts_req", "mPostObjects = " + mPostObjects.toString());
 
 
-                        } catch (JSONException e) {
+                        } catch (org.json.JSONException e) {
                             Log.d("get_posts_req", e.getMessage());
                         }
 
-                        if (mPosition == 0) {
-                            Collections.sort(mPostObjects, new ByDateComparator());
-                        } else {
-                            Collections.sort(mPostObjects, new TrendingComparator());
-                        }
+                        Collections.sort(mPostObjects, new ByDateComparator());
+
                         // add empty head for 'new post' card
                         mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
@@ -188,7 +192,7 @@ public class ProfileRecyclerViewFragment extends Fragment {
             }
         };
 
-    // Adding request to request queue
+        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
 
 

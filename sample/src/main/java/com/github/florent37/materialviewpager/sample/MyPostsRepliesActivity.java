@@ -3,9 +3,9 @@ package com.github.florent37.materialviewpager.sample;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -41,17 +41,20 @@ import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by jennykim on 9/30/15.
+ */
+public class MyPostsRepliesActivity extends AppCompatActivity{
 
     private MaterialViewPager mViewPager;
-    private static MainActivity mInstance;
+    private static MyPostsRepliesActivity mInstance;
     private DrawerLayout mDrawer;
     private String[] mDrawerArray;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
-    private RecyclerViewFragment mRecentFragment;
-    private RecyclerViewFragment mTrendingFragment;
+    private MyPostsRecyclerViewFragment mMyPostsFragment;
+    private MyPostsRecyclerViewFragment mMyRepliesFragment;
     private TextView mBadge;
     private int currentDrawerPosition;
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("");
 
-        currentDrawerPosition = 0;
+        currentDrawerPosition = 1;
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
@@ -121,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position % 2) {
                     case 0:
-                        mRecentFragment =  RecyclerViewFragment.newInstance();
-                        mRecentFragment.setPosition(0);
-                        return mRecentFragment;
+                        mMyPostsFragment =  MyPostsRecyclerViewFragment.newInstance();
+                        mMyPostsFragment.setPosition(0);
+                        return mMyPostsFragment;
                     case 1:
-                        mTrendingFragment =  RecyclerViewFragment.newInstance();
-                        mTrendingFragment.setPosition(1);
-                        return mTrendingFragment;
+                        mMyRepliesFragment =  MyPostsRecyclerViewFragment.newInstance();
+                        mMyRepliesFragment.setPosition(1);
+                        return mMyRepliesFragment;
                     //case 2:
                     //    return WebViewFragment.newInstance();
                     default:
@@ -145,9 +148,9 @@ public class MainActivity extends AppCompatActivity {
             public CharSequence getPageTitle(int position) {
                 switch (position % 2) {
                     case 0:
-                        return "Recent";
+                        return "My Posts";
                     case 1:
-                        return "Trending";
+                        return "My Replies";
 
                 }
                 return "";
@@ -199,13 +202,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static synchronized MainActivity getInstance() {
+    public static synchronized MyPostsRepliesActivity getInstance() {
         return mInstance;
     }
 
     public void updateVotes(String postId, boolean hasUpvoted, boolean hasDownvoted, int numLikes) {
-        PostItem recentPostItem = getFragment(0).getAdapter().getOriginalAdapter().getPostItem(postId);
-        PostItem trendingPostItem = getFragment(1).getAdapter().getOriginalAdapter().getPostItem(postId);
+        PostItem recentPostItem = getFragment(0).getAdapter().getPostItem(postId);
+        PostItem trendingPostItem = getFragment(1).getAdapter().getPostItem(postId);
         if (recentPostItem != null) {
             recentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
         }
@@ -230,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
             boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
             int numLikes = getIntent().getIntExtra("numLikes", 0);
             int numComments = getIntent().getIntExtra("numComments", 0);
-            PostItem recentPostItem = getFragment(0).getAdapter().getOriginalAdapter().getPostItem(postId);
-            PostItem trendingPostItem = getFragment(1).getAdapter().getOriginalAdapter().getPostItem(postId);
+            PostItem recentPostItem = getFragment(0).getAdapter().getPostItem(postId);
+            PostItem trendingPostItem = getFragment(1).getAdapter().getPostItem(postId);
             if (recentPostItem != null) {
                 recentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
             }
@@ -259,11 +262,11 @@ public class MainActivity extends AppCompatActivity {
 //        mClickedPost = postitem;
 //    }
 
-    public RecyclerViewFragment getFragment(int position) {
+    public MyPostsRecyclerViewFragment getFragment(int position) {
         if (position == 0) {
-            return mRecentFragment;
+            return mMyPostsFragment;
         } else {
-            return mTrendingFragment;
+            return mMyRepliesFragment;
         }
     }
 
@@ -315,12 +318,13 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    break;
-                case 1:
-                    Intent toProfileIntent = new Intent(this, MyPostsRepliesActivity.class);
+//                    Intent toMainIntent = new Intent(this, MainActivity.class);
                     mDrawerList.setItemChecked(position, true);
                     mDrawer.closeDrawer(mDrawerList);
-                    startActivity(toProfileIntent);
+//                    startActivity(toProfileIntent);
+                    onBackPressed();
+                    break;
+                case 1:
                     break;
                 case 2:
                     //TODO: intent for settings

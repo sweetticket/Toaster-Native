@@ -341,6 +341,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
         String url = GlobalVariables.ROOT_URL + "/api/comments/new";
         String commentBody = mCommentEditText.getText().toString().trim();
+        mCommentEditText.setText("");
+        closeKeyboard();
 
         if (commentBody != "") {
 
@@ -357,9 +359,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("new_comment_req", response.toString());
-                            mCommentEditText.setText("");
                             populateComments();
-                            closeKeyboard();
                         }
                     }, new Response.ErrorListener() {
 

@@ -42,6 +42,8 @@
         <activity android:name=".PostDetailActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".MyPostsRepliesActivity"
+            android:launchMode="singleTask"></activity>
 
     </application>
 
