@@ -62,12 +62,12 @@ public class RecyclerViewFragment extends Fragment {
 
         if (mPosition == 0) {
             // recent
-            url = GlobalVariables.ROOT_URL + "/publications/recentPostsAndComments";
+            url = GlobalVariables.ROOT_URL + "/api/recentPostsComments/100/0";
 
 
         } else {
             // trending
-            url = GlobalVariables.ROOT_URL + "/publications/trendingPostsAndComments";
+            url = GlobalVariables.ROOT_URL + "/api/hotPostsComments/100/0";
         }
 
         sendGetPostsRequest(url);
