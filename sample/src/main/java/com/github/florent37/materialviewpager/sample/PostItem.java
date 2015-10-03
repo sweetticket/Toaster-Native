@@ -76,7 +76,9 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
-                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                if (MyHistoryActivity.alive) {
+                    MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                }
                 VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
@@ -97,7 +99,9 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
-                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                if (MyHistoryActivity.alive) {
+                    MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                }
                 VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
@@ -118,7 +122,9 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasDownvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
-                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                if (MyHistoryActivity.alive) {
+                    MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                }
                 VotingHelpers.sendPostDownvoteRequest(mPostId);
             }
         });

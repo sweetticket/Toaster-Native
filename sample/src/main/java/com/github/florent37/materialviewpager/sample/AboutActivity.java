@@ -180,7 +180,7 @@ public class AboutActivity extends AppCompatActivity {
         prefs.edit().clear().commit();
         Intent toSignupIntent = new Intent(this, SignUpActivity.class);
         finish();
-        if (MainActivity.active) {
+        if (MainActivity.alive) {
             MainActivity.getInstance().finish();
         }
         startActivity(toSignupIntent);

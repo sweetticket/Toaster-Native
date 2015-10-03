@@ -57,18 +57,18 @@ public class MyHistoryActivity extends AppCompatActivity{
     private MyHistoryRecyclerViewFragment mMyRepliesFragment;
     private TextView mBadge;
 
-    static boolean active = false;
+    static boolean alive = false;
 
     @Override
     public void onStart() {
         super.onStart();
-        active = true;
+        alive = true;
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         super.onStop();
-        active = false;
+        alive = false;
     }
 
 
@@ -393,7 +393,7 @@ public class MyHistoryActivity extends AppCompatActivity{
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
         prefs.edit().clear().commit();
         Intent toSignupIntent = new Intent(this, SignUpActivity.class);
-        if (MainActivity.active) {
+        if (MainActivity.alive) {
             MainActivity.getInstance().finish();
         }
         finish();

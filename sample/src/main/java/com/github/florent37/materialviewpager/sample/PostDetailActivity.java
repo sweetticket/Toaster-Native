@@ -242,7 +242,16 @@ public class PostDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (MainActivity.active) {
+        if (MyHistoryActivity.alive) {
+            Intent toHistoryIntent = new Intent(this, MyHistoryActivity.class);
+            toHistoryIntent.putExtra("postId", mPostId);
+            toHistoryIntent.putExtra("hasUpvoted", mHasUpvoted);
+            toHistoryIntent.putExtra("hasDownvoted", mHasDownvoted);
+            toHistoryIntent.putExtra("numLikes", numLikes);
+            toHistoryIntent.putExtra("numComments", numComments);
+            toHistoryIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(toHistoryIntent);
+        } else if (MainActivity.alive) {
             Intent toMainIntent = new Intent(this, MainActivity.class);
             toMainIntent.putExtra("postId", mPostId);
             toMainIntent.putExtra("hasUpvoted", mHasUpvoted);

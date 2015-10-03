@@ -53,18 +53,18 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewFragment mTrendingFragment;
     private TextView mBadge;
 
-    static boolean active = false;
+    static boolean alive = false;
 
     @Override
     public void onStart() {
         super.onStart();
-        active = true;
+        alive = true;
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         super.onStop();
-        active = false;
+        alive = false;
     }
 
 
