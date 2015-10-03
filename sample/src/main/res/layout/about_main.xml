@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -19,15 +26,15 @@
         android:gravity="left"
         android:padding="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
         android:text="Yolk Love"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:textColor="@color/ColorPrimaryDark" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/White"
+        android:background="@drawable/about_item"
         android:layout_marginBottom="20dp"
         android:id="@+id/share">
 
@@ -45,11 +52,11 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:src="@mipmap/upvote"
+            android:src="@mipmap/share"
             android:paddingRight="10dp"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:paddingLeft="5dp"
-            android:paddingBottom="5dp"></ImageView>
+            android:paddingBottom="10dp"></ImageView>
 
 
     </LinearLayout>
@@ -60,17 +67,16 @@
         android:layout_gravity="left"
         android:gravity="left"
         android:padding="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="Some Useful Info"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:textColor="@color/ColorPrimaryDark" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/White"
-        android:layout_marginBottom="20dp"
+        android:background="@drawable/about_item"
         android:id="@+id/about">
 
     <TextView
@@ -87,13 +93,78 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:src="@mipmap/upvote"
+            android:src="@mipmap/forward"
             android:layout_gravity="right"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
+            android:paddingRight="0dp"
+            android:paddingTop="10dp"
             android:paddingLeft="5dp"
-            android:paddingBottom="5dp"></ImageView>
+            android:paddingBottom="10dp"></ImageView>
 
         </LinearLayout>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/about_item_no_top"
+        android:id="@+id/privacy">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:gravity="top|left"
+            android:padding="15dp"
+            android:text="Privacy Policy"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@mipmap/forward"
+            android:layout_gravity="right"
+            android:paddingRight="0dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="10dp"></ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/about_item_no_top"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/terms">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:gravity="top|left"
+            android:padding="15dp"
+            android:text="Terms of Service"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@mipmap/forward"
+            android:layout_gravity="right"
+            android:paddingRight="0dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="10dp"></ImageView>
+
+    </LinearLayout>
+
 </LinearLayout>
+
+    <include layout="@layout/drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
