@@ -3,7 +3,6 @@ package com.github.florent37.materialviewpager.sample.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,14 +17,10 @@ import com.android.volley.VolleyError;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.sample.AppController;
 import com.github.florent37.materialviewpager.sample.ByDateComparator;
-import com.github.florent37.materialviewpager.sample.CustomMaterialAdapter;
 import com.github.florent37.materialviewpager.sample.CustomRequest;
 import com.github.florent37.materialviewpager.sample.GlobalVariables;
-import com.github.florent37.materialviewpager.sample.MainActivity;
-import com.github.florent37.materialviewpager.sample.MyPostsRecyclerAdapter;
-import com.github.florent37.materialviewpager.sample.PostsRecyclerViewAdapter;
+import com.github.florent37.materialviewpager.sample.MyHistoryRecyclerAdapter;
 import com.github.florent37.materialviewpager.sample.R;
-import com.github.florent37.materialviewpager.sample.TrendingComparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,16 +35,16 @@ import java.util.Map;
 /**
  * Created by florentchampigny on 24/04/15.
  */
-public class MyPostsRecyclerViewFragment extends Fragment {
+public class MyHistoryRecyclerViewFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private MyPostsRecyclerAdapter mAdapter;
+    private MyHistoryRecyclerAdapter mAdapter;
     private List<Object> mPostObjects = new ArrayList<Object>();
     private Map<String, Integer> mCommentsCountMap = new HashMap<String, Integer>();
     private int mPosition;
 
-    public static MyPostsRecyclerViewFragment newInstance() {
-        return new MyPostsRecyclerViewFragment();
+    public static MyHistoryRecyclerViewFragment newInstance() {
+        return new MyHistoryRecyclerViewFragment();
     }
 
     public void setPosition(int position) {
@@ -89,7 +84,7 @@ public class MyPostsRecyclerViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new MyPostsRecyclerAdapter(mPostObjects, mCommentsCountMap);
+        mAdapter = new MyHistoryRecyclerAdapter(mPostObjects, mCommentsCountMap);
         mRecyclerView.setAdapter(mAdapter);
         populatePosts();
         mAdapter.updateContents(mPostObjects, mCommentsCountMap);
@@ -99,7 +94,7 @@ public class MyPostsRecyclerViewFragment extends Fragment {
 
     }
 
-    public MyPostsRecyclerAdapter getAdapter() {
+    public MyHistoryRecyclerAdapter getAdapter() {
         return mAdapter;
     }
 

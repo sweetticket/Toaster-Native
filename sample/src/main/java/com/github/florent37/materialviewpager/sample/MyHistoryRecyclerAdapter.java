@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by florentchampigny on 24/04/15.
  */
-public class MyPostsRecyclerAdapter extends PostsRecyclerViewAdapter {
+public class MyHistoryRecyclerAdapter extends PostsRecyclerViewAdapter {
 
     List<Object> contents;
     private Map<String, Integer> mCommentsCountMap;
@@ -24,7 +24,7 @@ public class MyPostsRecyclerAdapter extends PostsRecyclerViewAdapter {
     static final int TYPE_HEADER = 0;
     static final int TYPE_CELL = 1;
 
-    public MyPostsRecyclerAdapter(List<Object> contents, Map<String, Integer> commentsCountMap) {
+    public MyHistoryRecyclerAdapter(List<Object> contents, Map<String, Integer> commentsCountMap) {
         super(contents, commentsCountMap);
         this.contents = contents;
         this.mCommentsCountMap = commentsCountMap;

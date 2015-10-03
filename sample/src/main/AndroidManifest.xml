@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SignUpActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustPan"
@@ -39,10 +39,16 @@
             android:background="@drawable/bg"
             android:launchMode="singleTask"
             android:theme="@style/InverseTheme"></activity>
+        <activity android:name=".SignUpActivity"
+            android:background="@drawable/bg"
+            android:launchMode="singleTask"
+            android:theme="@style/InverseTheme"></activity>
         <activity android:name=".PostDetailActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".MyPostsRepliesActivity"
+        <activity android:name=".MyHistoryActivity"
+            android:launchMode="singleTask"></activity>
+        <activity android:name=".AboutActivity"
             android:launchMode="singleTask"></activity>
 
     </application>

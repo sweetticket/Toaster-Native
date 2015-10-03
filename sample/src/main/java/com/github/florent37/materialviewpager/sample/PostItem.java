@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -77,6 +76,7 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
                 VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
@@ -97,6 +97,7 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasUpvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
                 VotingHelpers.sendPostUpvoteRequest(mPostId);
             }
         });
@@ -117,6 +118,7 @@ public class PostItem extends RecyclerView.ViewHolder {
                     mHasDownvoted = true;
                 }
                 MainActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
+                MyHistoryActivity.getInstance().updateVotes(mPostId, mHasUpvoted, mHasDownvoted, numLikes);
                 VotingHelpers.sendPostDownvoteRequest(mPostId);
             }
         });

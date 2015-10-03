@@ -31,7 +31,7 @@ import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
-import com.github.florent37.materialviewpager.sample.fragment.MyPostsRecyclerViewFragment;
+import com.github.florent37.materialviewpager.sample.fragment.MyHistoryRecyclerViewFragment;
 import com.github.florent37.materialviewpager.sample.fragment.RecyclerViewFragment;
 
 import org.json.JSONObject;
@@ -44,19 +44,18 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by jennykim on 9/30/15.
  */
-public class MyPostsRepliesActivity extends AppCompatActivity{
+public class MyHistoryActivity extends AppCompatActivity{
 
     private MaterialViewPager mViewPager;
-    private static MyPostsRepliesActivity mInstance;
+    private static MyHistoryActivity mInstance;
     private DrawerLayout mDrawer;
     private String[] mDrawerArray;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
-    private MyPostsRecyclerViewFragment mMyPostsFragment;
-    private MyPostsRecyclerViewFragment mMyRepliesFragment;
+    private MyHistoryRecyclerViewFragment mMyPostsFragment;
+    private MyHistoryRecyclerViewFragment mMyRepliesFragment;
     private TextView mBadge;
-    private int currentDrawerPosition;
 
     static boolean active = false;
 
@@ -81,12 +80,12 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
 
+        ((TextView) findViewById(R.id.logo_white)).setText("My History");
+
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
 
         setTitle("");
-
-        currentDrawerPosition = 1;
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
@@ -124,11 +123,11 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
             public Fragment getItem(int position) {
                 switch (position % 2) {
                     case 0:
-                        mMyPostsFragment =  MyPostsRecyclerViewFragment.newInstance();
+                        mMyPostsFragment =  MyHistoryRecyclerViewFragment.newInstance();
                         mMyPostsFragment.setPosition(0);
                         return mMyPostsFragment;
                     case 1:
-                        mMyRepliesFragment =  MyPostsRecyclerViewFragment.newInstance();
+                        mMyRepliesFragment =  MyHistoryRecyclerViewFragment.newInstance();
                         mMyRepliesFragment.setPosition(1);
                         return mMyRepliesFragment;
                     //case 2:
@@ -202,18 +201,18 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
 
     }
 
-    public static synchronized MyPostsRepliesActivity getInstance() {
+    public static synchronized MyHistoryActivity getInstance() {
         return mInstance;
     }
 
     public void updateVotes(String postId, boolean hasUpvoted, boolean hasDownvoted, int numLikes) {
-        PostItem recentPostItem = getFragment(0).getAdapter().getPostItem(postId);
-        PostItem trendingPostItem = getFragment(1).getAdapter().getPostItem(postId);
-        if (recentPostItem != null) {
-            recentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
+        PostItem myPostItem = getFragment(0).getAdapter().getPostItem(postId);
+        PostItem myCommentPostItem = getFragment(1).getAdapter().getPostItem(postId);
+        if (myPostItem != null) {
+            myPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
         }
-        if (trendingPostItem != null) {
-            trendingPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
+        if (myCommentPostItem != null) {
+            myCommentPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes);
         }
     }
 
@@ -242,27 +241,13 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
                 trendingPostItem.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
             }
         }
-
-//        if (mClickedPost != null) {
-//            boolean hasUpvoted = getIntent().getBooleanExtra("hasUpvoted", true);
-//            boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
-//            int numLikes = getIntent().getIntExtra("numLikes", 0);
-//            int numComments = getIntent().getIntExtra("numComments", 0);
-//            mClickedPost.updatePost(hasUpvoted, hasDownvoted, numLikes, numComments);
-//            mClickedPost = null;
-//            getFragment(0).getAdapter().getItem()
-//        }
     }
 
     public MaterialViewPager getViewPager() {
         return mViewPager;
     }
 
-//    public void setClickedPost(PostItem postitem) {
-//        mClickedPost = postitem;
-//    }
-
-    public MyPostsRecyclerViewFragment getFragment(int position) {
+    public MyHistoryRecyclerViewFragment getFragment(int position) {
         if (position == 0) {
             return mMyPostsFragment;
         } else {
@@ -312,22 +297,26 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        if (currentDrawerPosition != position) {
-            currentDrawerPosition = position;
+
             FragmentManager fragmentManager = getSupportFragmentManager();
+            // Highlight the selected item, update the title, and close the drawer
+            mDrawerList.setItemChecked(position, true);
+//          setTitle(mDrawerArray[position]);
+            mDrawer.closeDrawer(mDrawerList);
 
             switch (position) {
                 case 0:
-//                    Intent toMainIntent = new Intent(this, MainActivity.class);
-                    mDrawerList.setItemChecked(position, true);
-                    mDrawer.closeDrawer(mDrawerList);
-//                    startActivity(toProfileIntent);
-                    onBackPressed();
+                    Intent toMainIntent = new Intent(this, MainActivity.class);
+                    finish();
+                    startActivity(toMainIntent);
                     break;
                 case 1:
                     break;
                 case 2:
-                    //TODO: intent for settings
+                    //TODO: intent for "About"
+                    Intent toAboutIntent = new Intent(this, AboutActivity.class);
+                    finish();
+                    startActivity(toAboutIntent);
                     break;
                 case 3:
                     logout();
@@ -337,11 +326,6 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
             }
         }
 
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-//        setTitle(mDrawerArray[position]);
-        mDrawer.closeDrawer(mDrawerList);
-    }
 
     public void setBadgeCount(String numUnread) {
         if (numUnread == "0") {
@@ -409,6 +393,9 @@ public class MyPostsRepliesActivity extends AppCompatActivity{
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
         prefs.edit().clear().commit();
         Intent toSignupIntent = new Intent(this, SignUpActivity.class);
+        if (MainActivity.active) {
+            MainActivity.getInstance().finish();
+        }
         finish();
         startActivity(toSignupIntent);
     }

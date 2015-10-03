@@ -6,8 +6,8 @@
 
     <string-array name="drawer_array">
         <item>Home</item>
-        <item>My Stuff</item>
-        <item>Settings</item>
+        <item>My History</item>
+        <item>About</item>
         <item>Log Out</item>
     </string-array>
 </resources>

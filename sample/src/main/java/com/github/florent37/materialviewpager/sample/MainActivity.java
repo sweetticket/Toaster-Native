@@ -31,7 +31,6 @@ import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
-import com.github.florent37.materialviewpager.sample.fragment.MyPostsRecyclerViewFragment;
 import com.github.florent37.materialviewpager.sample.fragment.RecyclerViewFragment;
 
 import org.json.JSONObject;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewFragment mRecentFragment;
     private RecyclerViewFragment mTrendingFragment;
     private TextView mBadge;
-    private int currentDrawerPosition;
 
     static boolean active = false;
 
@@ -82,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
             Fabric.with(this, new Crashlytics());
 
         setTitle("");
-
-        currentDrawerPosition = 0;
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
@@ -309,21 +305,23 @@ public class MainActivity extends AppCompatActivity {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        if (currentDrawerPosition != position) {
-            currentDrawerPosition = position;
+
             FragmentManager fragmentManager = getSupportFragmentManager();
+            // Highlight the selected item, update the title, and close the drawer
+            mDrawerList.setItemChecked(position, true);
+    //      setTitle(mDrawerArray[position]);
+            mDrawer.closeDrawer(mDrawerList);
 
             switch (position) {
                 case 0:
                     break;
                 case 1:
-                    Intent toProfileIntent = new Intent(this, MyPostsRepliesActivity.class);
-                    mDrawerList.setItemChecked(position, true);
-                    mDrawer.closeDrawer(mDrawerList);
-                    startActivity(toProfileIntent);
+                    Intent toMyStuffIntent = new Intent(this, MyHistoryActivity.class);
+                    startActivity(toMyStuffIntent);
                     break;
                 case 2:
-                    //TODO: intent for settings
+                    Intent toAboutIntent = new Intent(this, AboutActivity.class);
+                    startActivity(toAboutIntent);
                     break;
                 case 3:
                     logout();
@@ -332,12 +330,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-//        setTitle(mDrawerArray[position]);
-        mDrawer.closeDrawer(mDrawerList);
-    }
 
     public void setBadgeCount(String numUnread) {
         if (numUnread == "0") {
