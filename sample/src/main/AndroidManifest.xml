@@ -49,6 +49,8 @@
         <activity android:name=".MyHistoryActivity"
             android:launchMode="singleTask"></activity>
         <activity android:name=".AboutActivity"
+        android:launchMode="singleTask"></activity>
+        <activity android:name=".AboutDetailActivity"
             android:launchMode="singleTask"></activity>
 
     </application>

@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -87,19 +88,44 @@ public class AboutActivity extends AppCompatActivity {
         if (!BuildConfig.DEBUG)
             Fabric.with(this, new Crashlytics());
 
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
-        mDrawer.setDrawerListener(mDrawerToggle);
-        mDrawerArray = getResources().getStringArray(R.array.drawer_array);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mDrawerArray));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        findViewById(R.id.about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AboutActivity.this, AboutDetailActivity.class);
+                intent.putExtra("page", "about");
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.privacy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AboutActivity.this, AboutDetailActivity.class);
+                intent.putExtra("page", "privacy");
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.terms).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AboutActivity.this, AboutDetailActivity.class);
+                intent.putExtra("page", "terms");
+                startActivity(intent);
+            }
+        });
+//
+//        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//
+//        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
+//        mDrawer.setDrawerListener(mDrawerToggle);
+//        mDrawerArray = getResources().getStringArray(R.array.drawer_array);
+//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+//
+//
+//        // Set the adapter for the list view
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.drawer_list_item, mDrawerArray));
+//        // Set the list's click listener
+//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     }
 
@@ -109,42 +135,42 @@ public class AboutActivity extends AppCompatActivity {
 
 
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            // Highlight the selected item, update the title, and close the drawer
-            mDrawerList.setItemChecked(position, true);
-//          setTitle(mDrawerArray[position]);
-            mDrawer.closeDrawer(mDrawerList);
-
-            switch (position) {
-                case 0:
-                    Intent toMainIntent = new Intent(this, MainActivity.class);
-                    finish();
-                    startActivity(toMainIntent);
-                    break;
-                case 1:
-                    Intent toMyStuffIntent = new Intent(this, MyHistoryActivity.class);
-                    finish();
-                    startActivity(toMyStuffIntent);
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    logout();
-                    break;
-                default:
-                    break;
-            }
-        }
+//    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+//        @Override
+//        public void onItemClick(AdapterView parent, View view, int position, long id) {
+//            selectItem(position);
+//        }
+//    }
+//
+//    /** Swaps fragments in the main content view */
+//    private void selectItem(int position) {
+//
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            // Highlight the selected item, update the title, and close the drawer
+//            mDrawerList.setItemChecked(position, true);
+////          setTitle(mDrawerArray[position]);
+//            mDrawer.closeDrawer(mDrawerList);
+//
+//            switch (position) {
+//                case 0:
+//                    Intent toMainIntent = new Intent(this, MainActivity.class);
+//                    finish();
+//                    startActivity(toMainIntent);
+//                    break;
+//                case 1:
+//                    Intent toMyStuffIntent = new Intent(this, MyHistoryActivity.class);
+//                    finish();
+//                    startActivity(toMyStuffIntent);
+//                    break;
+//                case 2:
+//                    break;
+//                case 3:
+//                    logout();
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
 
     private void logout() {
         GlobalVariables.mToken = null;
