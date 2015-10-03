@@ -14,6 +14,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.sample.AppController;
 import com.github.florent37.materialviewpager.sample.ByDateComparator;
@@ -45,6 +46,7 @@ public class RecyclerViewFragment extends Fragment {
     private List<Object> mPostObjects = new ArrayList<Object>();
     private Map<String, Integer> mCommentsCountMap = new HashMap<String, Integer>();
     private int mPosition;
+    private ProgressBarCircularIndeterminate mWheel;
 
     public static RecyclerViewFragment newInstance() {
         return new RecyclerViewFragment();
@@ -55,6 +57,8 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     public void populatePosts() {
+
+        mWheel.setVisibility(View.VISIBLE);
         mPostObjects.clear();
         mCommentsCountMap.clear();
 
@@ -82,6 +86,7 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mWheel = (ProgressBarCircularIndeterminate) view.findViewById(R.id.wheel);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -151,6 +156,8 @@ public class RecyclerViewFragment extends Fragment {
                         // add empty head for 'new post' card
                         mPostObjects.add(0, new Object());
                         mAdapter.notifyDataSetChanged();
+
+                        mWheel.setVisibility(View.GONE);
 
                         try {
                             JSONArray commentsJson = response.getJSONArray("comments");

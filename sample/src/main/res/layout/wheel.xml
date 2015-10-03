@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+    android:id="@+id/wheel"
+    android:background="@color/ColorPrimary"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:visibility="gone"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
