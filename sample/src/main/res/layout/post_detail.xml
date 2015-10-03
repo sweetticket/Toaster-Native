@@ -166,13 +166,6 @@
 
     </LinearLayout>
 
-    <!--&lt;!&ndash;<include layout="@layout/fragment_recyclerview" />&ndash;&gt;-->
-
-    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<include layout="@layout/post_item" />&ndash;&gt;-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -190,8 +183,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start|top" />
 
-        </LinearLayout>
+        <include layout="@layout/wheel" />
 
+        </LinearLayout>
 
 </LinearLayout>
 </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

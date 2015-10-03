@@ -17,6 +17,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 
 import org.json.JSONArray;
@@ -39,6 +40,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private NotiRecyclerViewAdapter mAdapter;
     private List<Object> mNotiObjects = new ArrayList<Object>();
     private Toolbar mToolbar;
+    private ProgressBarCircularIndeterminate mWheel;
 
     public static synchronized NotificationsActivity getInstance() {
         return mInstance;
@@ -49,6 +51,8 @@ public class NotificationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notifications);
         mInstance = this;
+
+        mWheel = (ProgressBarCircularIndeterminate) findViewById(R.id.wheel);
 
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         mToolbar.setTitle("NOTIFICATIONS");
@@ -91,11 +95,9 @@ public class NotificationsActivity extends AppCompatActivity {
     }
 
     private void populateNoti() {
-
+        mWheel.setVisibility(View.VISIBLE);
         mNotiObjects.clear();
-
         sendGetNotiRequest();
-
     }
 
     private void sendGetNotiRequest() {
@@ -142,7 +144,7 @@ public class NotificationsActivity extends AppCompatActivity {
                         Collections.sort(mNotiObjects, new CommentsComparator());
                         mAdapter.updateContents(mNotiObjects);
                         mAdapter.notifyDataSetChanged();
-
+                        mWheel.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {

@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gc.materialdesign.views.Button;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.ocpsoft.pretty.time.PrettyTime;
 
@@ -62,6 +63,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private boolean mHasDownvoted;
     private int numLikes;
     private int numComments;
+    private ProgressBarCircularIndeterminate mWheel;
 
 
     public static synchronized PostDetailActivity getInstance() {
@@ -73,6 +75,8 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_detail);
         mInstance = this;
+
+        mWheel = (ProgressBarCircularIndeterminate) findViewById(R.id.wheel);
 
         mCommentEditText = (EditText) findViewById(R.id.new_comment);
         mPostBody = (TextView) findViewById(R.id.post_body);
@@ -266,8 +270,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void populateComments() {
 
+        mWheel.setVisibility(View.VISIBLE);
         mCommentObjects.clear();
-
         sendGetCommentRequest();
 
     }
@@ -320,7 +324,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         Collections.sort(mCommentObjects, new CommentsComparator());
                         mAdapter.updateContents(mCommentObjects);
                         mAdapter.notifyDataSetChanged();
-
+                        mWheel.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {
