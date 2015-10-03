@@ -246,7 +246,16 @@ public class PostDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (MyHistoryActivity.alive) {
+        if (NotificationsActivity.alive) {
+            Intent toNotiEvent = new Intent(this, NotificationsActivity.class);
+            toNotiEvent.putExtra("postId", mPostId);
+            toNotiEvent.putExtra("hasUpvoted", mHasUpvoted);
+            toNotiEvent.putExtra("hasDownvoted", mHasDownvoted);
+            toNotiEvent.putExtra("numLikes", numLikes);
+            toNotiEvent.putExtra("numComments", numComments);
+            toNotiEvent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(toNotiEvent);
+        } else if (MyHistoryActivity.alive) {
             Intent toHistoryIntent = new Intent(this, MyHistoryActivity.class);
             toHistoryIntent.putExtra("postId", mPostId);
             toHistoryIntent.putExtra("hasUpvoted", mHasUpvoted);

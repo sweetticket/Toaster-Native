@@ -41,6 +41,19 @@ public class NotificationsActivity extends AppCompatActivity {
     private List<Object> mNotiObjects = new ArrayList<Object>();
     private Toolbar mToolbar;
     private ProgressBarCircularIndeterminate mWheel;
+    static boolean alive = false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        alive = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        alive = false;
+    }
 
     public static synchronized NotificationsActivity getInstance() {
         return mInstance;
@@ -91,7 +104,38 @@ public class NotificationsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         sendReadNotiRequest();
+
+        if (getIntent().hasExtra("postId")) {
+
+            String postId = getIntent().getStringExtra("postId");
+            boolean hasUpvoted = getIntent().getBooleanExtra("hasUpvoted", true);
+            boolean hasDownvoted = getIntent().getBooleanExtra("hasDownvoted", true);
+            int numLikes = getIntent().getIntExtra("numLikes", 0);
+            int numComments = getIntent().getIntExtra("numComments", 0);
+
+            if (MyHistoryActivity.alive) {
+                Intent toHistoryIntent = new Intent(this, MyHistoryActivity.class);
+                toHistoryIntent.putExtra("postId", postId);
+                toHistoryIntent.putExtra("hasUpvoted", hasUpvoted);
+                toHistoryIntent.putExtra("hasDownvoted", hasDownvoted);
+                toHistoryIntent.putExtra("numLikes", numLikes);
+                toHistoryIntent.putExtra("numComments", numComments);
+                toHistoryIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(toHistoryIntent);
+            } else if (MainActivity.alive) {
+                Intent toMainIntent = new Intent(this, MainActivity.class);
+                toMainIntent.putExtra("postId", postId);
+                toMainIntent.putExtra("hasUpvoted", hasUpvoted);
+                toMainIntent.putExtra("hasDownvoted", hasDownvoted);
+                toMainIntent.putExtra("numLikes", numLikes);
+                toMainIntent.putExtra("numComments", numComments);
+                toMainIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(toMainIntent);
+            }
+        }
+        finish();
     }
 
     private void populateNoti() {
