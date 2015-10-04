@@ -9,6 +9,7 @@
     <color name="ColorSecondary">#ffcf3e</color>
     <color name="YellowBrown">#c47402</color>
     <color name="ColorLightGray">#EEE</color>
+    <color name="ColorMediumGray">#ccc</color>
     <color name="White">#FFFFFF</color>
     <color name="DarkGray">#222</color>
     <color name="Highlight">#fff3c5</color>

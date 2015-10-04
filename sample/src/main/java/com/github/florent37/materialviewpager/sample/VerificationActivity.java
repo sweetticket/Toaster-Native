@@ -1,10 +1,14 @@
 package com.github.florent37.materialviewpager.sample;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.android.volley.Request;
@@ -26,6 +30,7 @@ public class VerificationActivity extends AppCompatActivity {
     Button alreadyVerifiedButton;
     Button emailAgainButton;
     Button toSignInButton;
+    Toolbar mToolbar;
 
     String mEmail;
     String mPassword;
@@ -45,6 +50,28 @@ public class VerificationActivity extends AppCompatActivity {
         alreadyVerifiedButton = (Button) findViewById(R.id.already_verified);
         emailAgainButton = (Button) findViewById(R.id.email_again);
         toSignInButton = (Button) findViewById(R.id.to_signin_btn);
+
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        mToolbar.setTitle("SIGN UP");
+//        mToolbar.setNavigationIcon(R.mipmap.back);
+        setSupportActionBar(mToolbar);
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            // clear FLAG_TRANSLUCENT_STATUS flag:
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            // finally change the color
+            int statusbar_color = getResources().getColor(R.color.YellowBrown);
+            window.setStatusBarColor(statusbar_color);
+        }
 
 
         alreadyVerifiedButton.setOnClickListener(new View.OnClickListener() {

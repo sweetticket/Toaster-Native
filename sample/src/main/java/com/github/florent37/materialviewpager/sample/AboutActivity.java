@@ -76,7 +76,7 @@ public class AboutActivity extends AppCompatActivity {
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             // finally change the color
-            int statusbar_color = Color.rgb(255, 177, 30);
+            int statusbar_color = getResources().getColor(R.color.YellowBrown);
             window.setStatusBarColor(statusbar_color);
         }
 
@@ -107,78 +107,10 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//
-//        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//
-//        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
-//        mDrawer.setDrawerListener(mDrawerToggle);
-//        mDrawerArray = getResources().getStringArray(R.array.drawer_array);
-//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-//
-//
-//        // Set the adapter for the list view
-//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, mDrawerArray));
-//        // Set the list's click listener
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
     }
 
     public static synchronized AboutActivity getInstance() {
         return mInstance;
-    }
-
-
-
-//    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-//        @Override
-//        public void onItemClick(AdapterView parent, View view, int position, long id) {
-//            selectItem(position);
-//        }
-//    }
-//
-//    /** Swaps fragments in the main content view */
-//    private void selectItem(int position) {
-//
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            // Highlight the selected item, update the title, and close the drawer
-//            mDrawerList.setItemChecked(position, true);
-////          setTitle(mDrawerArray[position]);
-//            mDrawer.closeDrawer(mDrawerList);
-//
-//            switch (position) {
-//                case 0:
-//                    Intent toMainIntent = new Intent(this, MainActivity.class);
-//                    finish();
-//                    startActivity(toMainIntent);
-//                    break;
-//                case 1:
-//                    Intent toMyStuffIntent = new Intent(this, MyHistoryActivity.class);
-//                    finish();
-//                    startActivity(toMyStuffIntent);
-//                    break;
-//                case 2:
-//                    break;
-//                case 3:
-//                    logout();
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-
-    private void logout() {
-        GlobalVariables.mToken = null;
-        GlobalVariables.mUserId = null;
-        GlobalVariables.mTokenExp = null;
-        SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
-        prefs.edit().clear().commit();
-        Intent toSignupIntent = new Intent(this, SignUpEmailActivity.class);
-        finish();
-        if (MainActivity.alive) {
-            MainActivity.getInstance().finish();
-        }
-        startActivity(toSignupIntent);
     }
 
 }

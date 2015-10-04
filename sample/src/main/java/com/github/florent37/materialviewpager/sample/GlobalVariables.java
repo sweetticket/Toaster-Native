@@ -9,7 +9,9 @@ public class GlobalVariables {
     public static String mTokenExp;
     public static boolean mIsVerified;
     // Howon's house
-    public static final String ROOT_URL = "http://192.168.0.105:3000";
+//    public static final String ROOT_URL = "http://192.168.0.105:3000";
+    // sweetticket_EXT
+    public static final String ROOT_URL = "http://192.168.1.146:3000";
     // Redrover
 //    public static final String ROOT_URL ="http://10.145.14.158:3000";
 

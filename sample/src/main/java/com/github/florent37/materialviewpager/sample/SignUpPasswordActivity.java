@@ -2,10 +2,14 @@ package com.github.florent37.materialviewpager.sample;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,9 +31,8 @@ public class SignUpPasswordActivity extends AppCompatActivity {
     private static SignUpPasswordActivity mInstance;
     Button continueButton;
     Button toSignInButton;
-    EditText emailField;
     EditText passwordField;
-    EditText passwordConfirmField;
+    Toolbar mToolbar;
 
     String mEmail;
     String mPassword;
@@ -50,7 +53,29 @@ public class SignUpPasswordActivity extends AppCompatActivity {
         toSignInButton = (Button) findViewById(R.id.to_signin_btn);
         passwordField = (EditText) findViewById(R.id.signup_password);
 
-//        passwordField.setHintTextColor(getResources().getColor(R.color.White));
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
+        mToolbar.setTitle("SIGN UP");
+        mToolbar.setNavigationIcon(R.mipmap.back);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            // clear FLAG_TRANSLUCENT_STATUS flag:
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            // finally change the color
+            int statusbar_color = getResources().getColor(R.color.YellowBrown);
+            window.setStatusBarColor(statusbar_color);
+        }
+
+        passwordField.setHintTextColor(getResources().getColor(R.color.ColorMediumGray));
 
 //        continueButton.getTextView().setTextColor(getResources().getColor(R.color.ColorPrimary));
 
@@ -87,7 +112,7 @@ public class SignUpPasswordActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // do nothing
+        super.onBackPressed();
     }
 
     private void sendSignUpRequest() {

@@ -84,7 +84,7 @@ public class NotificationsActivity extends AppCompatActivity {
             // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             // finally change the color
-            int statusbar_color = Color.rgb(255, 177, 30);
+            int statusbar_color = getResources().getColor(R.color.YellowBrown);
             window.setStatusBarColor(statusbar_color);
         }
 
