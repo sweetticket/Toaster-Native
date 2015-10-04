@@ -7,11 +7,14 @@
     <color name="ColorPrimary">#ffb11e</color>
     <color name="ColorPrimaryDark">#ff9800</color>
     <color name="ColorSecondary">#ffcf3e</color>
-    <color name="tabsScrollColor">#c47402</color>
+    <color name="YellowBrown">#c47402</color>
     <color name="ColorLightGray">#EEE</color>
     <color name="White">#FFFFFF</color>
     <color name="DarkGray">#222</color>
     <color name="Highlight">#fff3c5</color>
+    <color name="DarkBrownGray">#CAAA94</color>
+
+    <color name="BrownGray">#F3EBE0</color>
 
     <color name="accent_color">@color/ColorPrimary</color>
     <color name="colorPrimary">@color/ColorPrimary</color>
@@ -19,5 +22,6 @@
     <color name="statusBarColor">@color/ColorPrimary</color>
     <color name="navigationBarColor">@color/ColorPrimary</color>
     <color name="drawerArrowColor">@android:color/white</color>
+    <color name="tabsScrollColor">@color/YellowBrown</color>
 
 </resources>

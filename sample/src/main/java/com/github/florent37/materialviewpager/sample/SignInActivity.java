@@ -1,25 +1,18 @@
 package com.github.florent37.materialviewpager.sample;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.gc.materialdesign.views.Button;
 
 import org.json.JSONObject;
@@ -55,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
             Log.d("mUserId", "signed in as " + GlobalVariables.mUserId + ", token: " + GlobalVariables.mToken);
 
             Intent toMainIntent = new Intent(this, MainActivity.class);
-            SignUpActivity.getInstance().finish();
+            SignUpEmailActivity.getInstance().finish();
             finish();
             startActivity(toMainIntent);
         }
@@ -137,7 +130,7 @@ public class SignInActivity extends AppCompatActivity {
                         }
 
                         Intent toMainIntent = new Intent(mInstance, MainActivity.class);
-                        SignUpActivity.getInstance().finish();
+                        SignUpEmailActivity.getInstance().finish();
                         finish();
                         startActivity(toMainIntent);
                     }

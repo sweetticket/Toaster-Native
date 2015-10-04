@@ -1,9 +1,6 @@
 package com.github.florent37.materialviewpager.sample;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,40 +9,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.Button;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by jennykim on 9/20/15.
  */
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpPasswordActivity extends AppCompatActivity {
 
-    private static SignUpActivity mInstance;
-    Button signUpButton;
+    private static SignUpPasswordActivity mInstance;
+    Button continueButton;
     Button toSignInButton;
     EditText emailField;
     EditText passwordField;
@@ -53,60 +33,41 @@ public class SignUpActivity extends AppCompatActivity {
 
     String mEmail;
     String mPassword;
-    String mPassword2;
 
-    public static synchronized SignUpActivity getInstance() {
+    public static synchronized SignUpPasswordActivity getInstance() {
         return mInstance;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up);
+        setContentView(R.layout.sign_up_password);
         mInstance = this;
 
+        mEmail = getIntent().getStringExtra("email");
 
-        if (GlobalVariables.mUserId != null && GlobalVariables.mTokenExp != null && GlobalVariables.mToken != null) {
-            Log.d("mUserId", "signed in as " + GlobalVariables.mUserId + ", token: " + GlobalVariables.mToken);
-
-            Intent toMainIntent = new Intent(this, MainActivity.class);
-            finish();
-            startActivity(toMainIntent);
-        }
-
-
-        TextView appTitle = (TextView) findViewById(R.id.app_title);
-
-        Typeface face = Typeface.createFromAsset(getAssets(),
-                "fonts/MAXWELLBOLD.ttf");
-        appTitle.setTypeface(face);
-
-        signUpButton = (Button) findViewById(R.id.signup_btn);
+        continueButton = (Button) findViewById(R.id.continue_btn);
         toSignInButton = (Button) findViewById(R.id.to_signin_btn);
-        emailField = (EditText) findViewById(R.id.signup_email);
         passwordField = (EditText) findViewById(R.id.signup_password);
-        passwordConfirmField = (EditText) findViewById(R.id.signup_password2);
 
-        emailField.setHintTextColor(getResources().getColor(R.color.White));
-        passwordField.setHintTextColor(getResources().getColor(R.color.White));
-        passwordConfirmField.setHintTextColor(getResources().getColor(R.color.White));
+//        passwordField.setHintTextColor(getResources().getColor(R.color.White));
 
-        signUpButton.getTextView().setTextColor(getResources().getColor(R.color.ColorPrimary));
+//        continueButton.getTextView().setTextColor(getResources().getColor(R.color.ColorPrimary));
 
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        continueButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
-                mEmail = emailField.getText().toString().trim().toLowerCase();
                 mPassword = passwordField.getText().toString();
-                mPassword2 = passwordConfirmField.getText().toString();
 
-                if (mEmail != "" && mPassword != "" && mPassword2 != "") {
-                    sendSignUpRequest();
+                if (mPassword != "") {
+                    if (mPassword.length() > 5) {
+                        sendSignUpRequest();
+                    } else {
+                        findViewById(R.id.not_valid).setVisibility(View.VISIBLE);
+                    }
 
-                } else if (mPassword != mPassword2) {
-                    //TODO: Display error msg
                 }
 
 
@@ -117,6 +78,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Intent toSignInIntent = new Intent(mInstance, SignInActivity.class);
+                finish();
+                SignUpEmailActivity.getInstance().finish();
                 startActivity(toSignInIntent);
             }
         });
@@ -153,10 +116,10 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.d("sign_up_req", e.getMessage());
                         }
 
-                        Intent toMainIntent = new Intent(mInstance, MainActivity.class);
-                        SignUpActivity.getInstance().finish();
+                        Intent toVerificationIntent = new Intent(mInstance, VerificationActivity.class);
+                        SignUpEmailActivity.getInstance().finish();
                         finish();
-                        startActivity(toMainIntent);
+                        startActivity(toVerificationIntent);
                     }
                 }, new Response.ErrorListener() {
 
