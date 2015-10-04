@@ -43,7 +43,7 @@ public class SplashActivity extends Activity {
 
                 Intent intent;
 
-                if (GlobalVariables.mUserId != null && GlobalVariables.mTokenExp != null && GlobalVariables.mToken != null) {
+                if (GlobalVariables.mUserId != null && GlobalVariables.mTokenExp != null && GlobalVariables.mToken != null && GlobalVariables.mIsVerified) {
                     Log.d("mUserId", "signed in as " + GlobalVariables.mUserId + ", token: " + GlobalVariables.mToken);
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 } else {

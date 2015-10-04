@@ -98,6 +98,7 @@ public class SignUpEmailActivity extends AppCompatActivity {
         if (getIntent().hasExtra("emailNotNew")) {
             findViewById(R.id.not_valid).setVisibility(View.GONE);
             findViewById(R.id.already_exists).setVisibility(View.VISIBLE);
+            emailField.setText("");
         }
     }
 

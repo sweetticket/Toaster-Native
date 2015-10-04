@@ -390,6 +390,7 @@ public class MyHistoryActivity extends AppCompatActivity{
         GlobalVariables.mToken = null;
         GlobalVariables.mUserId = null;
         GlobalVariables.mTokenExp = null;
+        GlobalVariables.mIsVerified = false;
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
         prefs.edit().clear().commit();
         Intent toSignupIntent = new Intent(this, SignUpEmailActivity.class);

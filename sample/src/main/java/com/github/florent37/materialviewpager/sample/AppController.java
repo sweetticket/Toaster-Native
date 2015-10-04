@@ -41,6 +41,7 @@ public class AppController extends Application {
         GlobalVariables.mUserId = prefs.getString("userId", null);
         GlobalVariables.mToken = prefs.getString("token", null);
         GlobalVariables.mTokenExp = prefs.getString("tokenExp", null);
+        GlobalVariables.mIsVerified = prefs.getBoolean("isVerified", false);
 
 //        Parse.initialize(this, "nGWY63hAKCyyMHS41xmjNiL4mCIqsJ0TBGWAG4vy", "w1ps0nxnPNfpJvIGnw52wCl5Og5eOLgiwiuXHn6i");
 //
