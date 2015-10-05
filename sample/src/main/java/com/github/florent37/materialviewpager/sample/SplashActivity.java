@@ -46,6 +46,8 @@ public class SplashActivity extends Activity {
                 if (GlobalVariables.mUserId != null && GlobalVariables.mTokenExp != null && GlobalVariables.mToken != null && GlobalVariables.mIsVerified) {
                     Log.d("mUserId", "signed in as " + GlobalVariables.mUserId + ", token: " + GlobalVariables.mToken);
                     intent = new Intent(SplashActivity.this, MainActivity.class);
+                } else if (!GlobalVariables.mIsVerified){
+                    intent = new Intent(SplashActivity.this, VerificationActivity.class);
                 } else {
                 /* Create an Intent that will start the Menu-Activity. */
                    intent = new Intent(SplashActivity.this, SignUpEmailActivity.class);

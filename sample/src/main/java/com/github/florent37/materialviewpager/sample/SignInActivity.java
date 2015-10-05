@@ -129,10 +129,16 @@ public class SignInActivity extends AppCompatActivity {
                             Log.d("sign_in_req", e.getMessage());
                         }
 
-                        Intent toMainIntent = new Intent(mInstance, MainActivity.class);
+                        Intent intent;
+
+                        if (GlobalVariables.mIsVerified) {
+                            intent = new Intent(mInstance, MainActivity.class);
+                        } else {
+                            intent = new Intent(mInstance, VerificationActivity.class);
+                        }
                         SignUpEmailActivity.getInstance().finish();
                         finish();
-                        startActivity(toMainIntent);
+                        startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
 
