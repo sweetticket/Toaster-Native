@@ -47,11 +47,9 @@
             android:launchMode="singleTask"
             android:theme="@style/InverseTheme"></activity>
         <activity android:name=".SignUpEmailActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:launchMode="singleTask"></activity>
         <activity android:name=".SignUpPasswordActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:launchMode="singleTask"></activity>
         <activity android:name=".VerificationActivity"
             android:launchMode="singleTask"></activity>
         <activity android:name=".PostDetailActivity"

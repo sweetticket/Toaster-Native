@@ -393,11 +393,11 @@ public class MyHistoryActivity extends AppCompatActivity{
         GlobalVariables.mIsVerified = false;
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
         prefs.edit().clear().commit();
-        Intent toSignupIntent = new Intent(this, SignUpEmailActivity.class);
+        Intent toSignInIntent = new Intent(this, SignInActivity.class);
         if (MainActivity.alive) {
             MainActivity.getInstance().finish();
         }
         finish();
-        startActivity(toSignupIntent);
+        startActivity(toSignInIntent);
     }
 }

@@ -48,7 +48,7 @@ public class SplashActivity extends Activity {
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 } else {
                 /* Create an Intent that will start the Menu-Activity. */
-                   intent = new Intent(SplashActivity.this, MainActivity.class);
+                   intent = new Intent(SplashActivity.this, SignUpEmailActivity.class);
                 }
                 SplashActivity.this.startActivity(intent);
                 SplashActivity.this.finish();

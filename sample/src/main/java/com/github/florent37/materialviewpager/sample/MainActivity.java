@@ -397,8 +397,8 @@ public class MainActivity extends AppCompatActivity {
         GlobalVariables.mIsVerified = false;
         SharedPreferences prefs = getSharedPreferences("UserInfo", 0);
         prefs.edit().clear().commit();
-        Intent toSignupIntent = new Intent(this, SignUpEmailActivity.class);
+        Intent toSignInIntent = new Intent(this, SignInActivity.class);
         finish();
-        startActivity(toSignupIntent);
+        startActivity(toSignInIntent);
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -28,7 +29,7 @@ public class SignUpEmailActivity extends AppCompatActivity {
 
     private static SignUpEmailActivity mInstance;
     Button continueButton;
-    Button toSignInButton;
+    TextView toSignInButton;
     EditText emailField;
 
     String mEmail;
@@ -58,7 +59,7 @@ public class SignUpEmailActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         continueButton = (Button) findViewById(R.id.continue_btn);
-        toSignInButton = (Button) findViewById(R.id.to_signin_btn);
+        toSignInButton = (TextView) findViewById(R.id.to_signin_btn);
         emailField = (EditText) findViewById(R.id.signup_email);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -107,6 +108,12 @@ public class SignUpEmailActivity extends AppCompatActivity {
                 startActivity(toSignInIntent);
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override

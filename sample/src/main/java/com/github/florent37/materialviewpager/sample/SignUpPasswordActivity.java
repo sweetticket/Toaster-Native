@@ -30,7 +30,7 @@ public class SignUpPasswordActivity extends AppCompatActivity {
 
     private static SignUpPasswordActivity mInstance;
     Button continueButton;
-    Button toSignInButton;
+    TextView toSignInButton;
     EditText passwordField;
     Toolbar mToolbar;
 
@@ -50,7 +50,7 @@ public class SignUpPasswordActivity extends AppCompatActivity {
         mEmail = getIntent().getStringExtra("email");
 
         continueButton = (Button) findViewById(R.id.continue_btn);
-        toSignInButton = (Button) findViewById(R.id.to_signin_btn);
+        toSignInButton = (TextView) findViewById(R.id.to_signin_btn);
         passwordField = (EditText) findViewById(R.id.signup_password);
 
         mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
@@ -151,6 +151,12 @@ public class SignUpPasswordActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("sign_up_req", "Error: " + error.getMessage());
+                if (error.getMessage().contains("Email already exists")) {
+                    Intent toSignUpEmailIntent = new Intent(mInstance, SignUpEmailActivity.class);
+                    toSignUpEmailIntent.putExtra("emailNotNew", true);
+                    finish();
+                    startActivity(toSignUpEmailIntent);
+                }
             }
         });
 

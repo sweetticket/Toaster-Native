@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 public class CustomRequest extends Request<JSONObject> {
@@ -58,6 +59,17 @@ public class CustomRequest extends Request<JSONObject> {
     protected void deliverResponse(JSONObject response) {
         // TODO Auto-generated method stub
         listener.onResponse(response);
+    }
+
+    //In your extended request class
+    @Override
+    protected VolleyError parseNetworkError(VolleyError volleyError){
+        if(volleyError.networkResponse != null && volleyError.networkResponse.data != null){
+            VolleyError error = new VolleyError(new String(volleyError.networkResponse.data));
+            volleyError = error;
+        }
+
+        return volleyError;
     }
 
 }
